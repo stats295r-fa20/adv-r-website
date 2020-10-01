@@ -19,7 +19,7 @@ Fall 2020
 
 The course will introduce writing reproducible reports using R Markdown and version control. Students will write code to work with data that have different structures, format, and size and will learn practices to optimize code for efficiency. Students will develop data applications using Shiny and personal websites where they maintain their data science portfolio.  
 
-Course website is hosted at [this link](https://stats295r-fa20.github.io/adv-r-website/).
+Course website is hosted at [this link](https://stats295r-fa20.github.io/adv-r-website/index.html).
 
 <hr>
 
