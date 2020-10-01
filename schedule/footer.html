@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <footer>   <hr>
+
+      <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      }
+      </script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-179397789-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-179397789-1');
+</script>
+
+
+
+
+      <div class="media">
+  <img class="mr-3" src="../img/stats295-logo.png"
+  alt="IDS Course logo" style="width:100px; margin-right:20%; margin-left:10%;">
+  <div class="media-body">
+    <h5 class="mt-0">Introduction to Data Science </h5>
+    University of California, Irvine <br>
+    Fall 2020 <br>
+    &copy; <a href="https://minedogucu.com">Mine Dogucu</a> <br>
+    
+  </div>
+</div>
+
+
+
+</footer>
+
+  </body>
+</html>

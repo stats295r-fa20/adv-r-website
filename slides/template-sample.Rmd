@@ -1,0 +1,109 @@
+---
+title: "A very cool topic about data science"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+
+
+---
+
+class: title-slide
+
+```{r echo = FALSE}
+library(fabricerin)
+```
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: inverse middle center
+
+
+.font150[Some new topic]
+
+
+
+---
+
+
+
+```{r echo = FALSE}
+fabric_drawing(cid = "canvas1", 
+               cwidth = 1100, 
+               cheight = 550, 
+               cfill = "#e2d7c4", 
+               drawingWidth = 2, 
+               gumSize = 32)
+
+fabric_text_add(cid = "canvas1", 
+                textId = "txt2",
+                text = "$$x+y$$", 
+                left = 200, 
+                top = 300)
+```
+
+---
+
+## Notes
+
+>Some brilliant quote by someone  
+
+.important[
+Note that your professor is here to support you and you will do great things in this course.
+]
+
+
+- Great thing 1
+
+- Great thing 2
+
+Course website is [introdata.science](introdata.science)
+
+.smallish[
+
+Some footnote
+
+]
+
+---
+
+## R code
+
+```{r, message=FALSE, eval = FALSE}
+library(beep)
+beepr()
+```
+
+Also mention it in line `beepr::beep()`
+
+
+Or even highlight it
+
+```{r, message=FALSE, eval = FALSE}
+library(beep)
+beepr() #<<
+```
+---
+
+## Math
+
+$$x+7\beta$$
+
+
+
+
+
