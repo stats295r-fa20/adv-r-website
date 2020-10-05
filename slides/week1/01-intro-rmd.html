@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R Markdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <link rel="stylesheet" href="slide-style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide
+
+
+&lt;br&gt;
+&lt;br&gt;
+.right-panel[ 
+
+# Introduction to R Markdown
+## Dr. Mine Dogucu
+]
+
+
+---
+
+class: inverse middle 
+
+.font150[markup languages]
+
+---
+
+class: middle
+
+
+## LaTeX
+
+
+&lt;br&gt;
+
+
+.pull-left[
+```
+$\frac{3}{5}$
+```
+]
+
+.pull-right[
+
+`\(\frac{3}{5}\)`
+
+]
+
+---
+class: middle
+
+## HTML (Hypertext Markup Language)
+
+&lt;br&gt;
+
+
+.pull-left[
+
+```
+&lt;a href = "http://minedogucu.com"&gt;
+  Mine Dogucu&lt;/a&gt;
+```
+]
+
+.pull-right[
+
+&lt;a href = "http://minedogucu.com"&gt;Mine Dogucu&lt;/a&gt;
+
+]
+
+---
+class: middle
+
+
+## markdown &lt;svg style="height:0.8em;top:.04em;position:relative;fill:#4d2600;" viewBox="0 0 640 512"&gt;&lt;path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/&gt;&lt;/svg&gt;
+
+&lt;br&gt;
+
+
+.pull-left[
+
+
+
+```
+[Mine Dogucu](http://minedogucu.com)
+```
+]
+
+.pull-right[
+
+[Mine Dogucu](http://minedogucu.com)
+]
+
+---
+class: inverse middle center
+
+.font150[R Markdown]
+
+---
+
+class: inverse middle center
+
+.font150[~~R~~ Markdown]
+
+---
+
+## markdown &lt;svg style="height:0.8em;top:.04em;position:relative;fill:#4d2600;" viewBox="0 0 640 512"&gt;&lt;path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/&gt;&lt;/svg&gt;
+
+&lt;br&gt;
+
+
+
+.pull-left[
+
+```
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+```
+]
+
+.pull-right[
+
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+]
+
+---
+
+class: inverse
+
+.font100[&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 581 512"&gt;&lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/&gt;&lt;/svg&gt; = .R file]
+
+.font100[&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 640 512"&gt;&lt;path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/&gt;&lt;/svg&gt; = .md file]
+
+.font100[&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 581 512"&gt;&lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"/&gt;&lt;/svg&gt; + &lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 640 512"&gt;&lt;path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z"/&gt;&lt;/svg&gt; = .Rmd file]
+
+---
+class: center middle
+
+#### markdown document
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/1-rmd-md.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+
+class: center middle
+
+#### R Markdown document
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/1-rmd-rmd.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+
+class: center middle
+
+#### YAML (Yet Another Markup Language)
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/1-rmd-yaml.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+
+### More YAML
+
+```yaml
+output:pdf_document
+```
+
+--
+
+```yaml
+output:
+  html_document:
+    toc: true
+```
+  
+--
+
+```yaml
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+```
+
+More in the [R Markdown book](https://bookdown.org/yihui/rmarkdown/html-document.html)
+
+---
+
+
+class: center middle
+
+#### Parameterized Reporting in R Markdown
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/1-rmd-params.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+---
+
+&lt;img src="img/rmd-parts.jpeg" width="100%" /&gt;
+
+---
+
+class: center middle
+
+### Starting a New R Markdown document
+
+File &gt; New File &gt; R Markdown
+
+---
+
+class: center middle
+
+## Add Chunk
+
+&lt;img src="img/code-chunk.png" width="50%" /&gt;
+
+---
+
+class: center middle
+
+## Run the Current Chunk
+
+&lt;img src="img/run-code.png" width="20%" /&gt;
+
+---
+
+class: center middle 
+
+## Knit
+
+&lt;img src="img/knit.png" width="50%" /&gt;
+
+---
+
+class: middle center
+
+
+## Shortcuts
+
+|                            | Windows          | Mac              |
+|----------------------------|------------------|------------------|
+| add chunk                  | Ctrl + Alt + I   | Cmd + Option + I |
+| run the current chunk      | Ctrl + Alt + C   | Cmd + Option + C |
+| run current line/selection | Ctrl + Enter     | Cmd + Return     |
+| knit                       | Ctrl + Shift + K | Cmd + Shift + K  |
+
+
+---
+class: center middle 
+
+## (some) Chunk Options 
+
+&lt;table align = "center"&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;echo = FALSE&lt;/td&gt;
+&lt;td&gt;hides the code&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;message = FALSE&lt;/td&gt;
+&lt;td&gt;hides messages&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;warning = FALSE&lt;/td&gt;
+&lt;td&gt;hides warning&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;error = TRUE&lt;/td&gt;
+&lt;td&gt;renders despite errors and displays the error&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;eval = FALSE&lt;/td&gt;
+&lt;td&gt;code is not evaluated&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt; cache = TRUE&lt;/td&gt;
+&lt;td&gt;will not run if it has been run before and &lt;br&gt; the output from previous run would be used&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;/table&gt;
+ 
+
+---
+
+class: middle
+
+## My Slides
+
+Slides that you are currently looking at are also written in R Markdown. You can take a look at them on [GitHub repo](https://github.com/stats295r-fa20/adv-r-website/tree/master/slides) for the course website. They are made with xaringan package which we will talk more about later.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "pygments",
+"highlightLines": true,
+"highlightLanguage": "r"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

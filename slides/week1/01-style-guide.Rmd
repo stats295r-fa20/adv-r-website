@@ -1,0 +1,74 @@
+---
+title: "Style Guides"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+### machine- and human-readable code
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+mtcars %>% 
+  select(mpg, wt, am) %>% 
+  head()
+```
+
+--
+```{r eval=FALSE}
+lm(mpg~wt,data=subset(mtcars,am==1),na.action=na.omit(wt))
+```
+
+--
+
+```{r eval=FALSE}
+lm(mpg ~ wt, 
+   data = subset(mtcars, am == 1),
+   na.action=na.omit(wt))
+```
+
+
+---
+class: middle 
+
+> Good coding style is like correct punctuation: you can manage without it, butitsuremakesthingseasiertoread. 
+Hadley Wickham
+
+                        
+---
+
+class: middle
+
+[Google's R Style Guide](https://google.github.io/styleguide/Rguide.html)
+
+[The tidyverse style guide](https://style.tidyverse.org/)
+
+
+[The State of Naming Conventions in R](https://journal.r-project.org/archive/2012-2/RJournal_2012-2_Baaaath.pdf)
+
+---
+
+class: middle 
+
+In this course, we will use [the tidyverse style guide](https://style.tidyverse.org/). 
+
+

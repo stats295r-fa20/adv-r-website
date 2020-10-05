@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>A very cool topic about data science</title>
+    <title>Sample Template for my slides</title>
     <meta charset="utf-8" />
     <meta name="author" content="Dr. Mine Dogucu" />
     <script src="template-sample_files/fabric-3.6.3/fabric.min.js"></script>
@@ -21,7 +21,7 @@ class: title-slide
 &lt;br&gt;
 .right-panel[ 
 
-# A very cool topic about data science
+# Sample Template for my slides
 ## Dr. Mine Dogucu
 ]
 
@@ -119,35 +119,115 @@ $('#exportcanvas1').click(function(){
 
 
 
-</script><script>
+</script>
 
-  var txt2 = new fabric.Text("$$x+y$$", {
+---
 
-  left: 200,
-  top: 300,
-  fontFamily: 'Comic Sans',
-  fontSize: 40,
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  underline: false,
-  linethrough: false,
-  overline: false,
-  fill: '#2F3941',
-  angle: 0,
-  opacity: 1,
-  stroke: '#282A36',
-  strokeWidth: 1,
-  textAlign: 'center',
-  lineHeight: 1,
-  
-  selectable: true,
-  
+
+.left-panel[
+
+```r
+library(magrittr)
+lm(mpg ~ am, data = mtcars) %&gt;% 
+  broom::tidy()
+```
+
+```
+## # A tibble: 2 x 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)    17.1       1.12     15.2  1.13e-15
+## 2 am              7.24      1.76      4.11 2.85e- 4
+```
+
+
+]
+
+.right-panel[
+
+
+<input id = erasecanvas2 type = 'checkbox' title='Check it to erase !'>
+
+<input id = canvas2drawing-color type = 'color' value = '#005E7A' style = 'width:30px;'>
+
+<input id = exportcanvas2 type = 'button' style = 'width:55px;' value = 'Export'>
+
+<canvas id="canvas2" width="650" height="550"></canvas>
+<script>
+const canvas2 = new fabric.Canvas('canvas2', {
+    backgroundColor: '#e2d7c4',
+    isDrawingMode: true
+
+    });
+
+
+canvas2.freeDrawingBrush.width  = 2;
+
+
+canvas2drawingColorEl = document.getElementById('canvas2drawing-color');
+
+canvas2.freeDrawingBrush.color = canvas2drawingColorEl.value;
+
+canvas2drawingColorEl.onchange = function() {
+    canvas2.freeDrawingBrush.color = canvas2drawingColorEl.value;
+  };
+
+
+ $('#erasecanvas2').click(function(){
+
+    if (this.checked) {
+
+      canvas2.freeDrawingBrush.color  = '#e2d7c4';
+
+    } else {
+
+      canvas2.freeDrawingBrush.color = canvas2drawingColorEl.value;
+
+    }
+
+
 
 });
 
-  canvas1.add(txt2);
-</script>
 
+
+
+
+ $('#erasecanvas2').click(function(){
+
+    if (this.checked) {
+
+      canvas2.freeDrawingBrush.width   = 32;
+
+    } else {
+
+      canvas2.freeDrawingBrush.width  = 2;
+
+    }
+
+
+});
+
+
+$('#exportcanvas2').click(function(){
+
+  $('#canvas2').get(0).toBlob(function(blob){
+
+    saveAs(blob, 'canvas2-IMG.png');
+
+
+  });
+
+
+});
+
+
+
+
+
+
+</script>
+]
 ---
 
 ## Notes

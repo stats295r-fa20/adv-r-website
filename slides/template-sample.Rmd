@@ -1,5 +1,5 @@
 ---
-title: "A very cool topic about data science"
+title: "Sample Template for my slides"
 author: "Dr. Mine Dogucu"
 output: 
   xaringan::moon_reader:
@@ -49,13 +49,35 @@ fabric_drawing(cid = "canvas1",
                drawingWidth = 2, 
                gumSize = 32)
 
-fabric_text_add(cid = "canvas1", 
-                textId = "txt2",
-                text = "$$x+y$$", 
-                left = 200, 
-                top = 300)
+
 ```
 
+---
+
+
+.left-panel[
+```{r}
+library(magrittr)
+lm(mpg ~ am, data = mtcars) %>% 
+  broom::tidy()
+```
+
+
+]
+
+.right-panel[
+
+```{r echo = FALSE}
+fabric_drawing(cid = "canvas2", 
+               cwidth = 650, 
+               cheight = 550, 
+               cfill = "#e2d7c4", 
+               drawingWidth = 2, 
+               gumSize = 32)
+
+
+```
+]
 ---
 
 ## Notes

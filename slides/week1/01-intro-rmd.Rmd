@@ -1,0 +1,334 @@
+---
+title: "Introduction to R Markdown"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+
+---
+
+class: inverse middle 
+
+.font150[markup languages]
+
+---
+
+class: middle
+
+
+## LaTeX
+
+
+<br>
+
+
+.pull-left[
+```
+$\frac{3}{5}$
+```
+]
+
+.pull-right[
+
+$\frac{3}{5}$
+
+]
+
+---
+class: middle
+
+## HTML (Hypertext Markup Language)
+
+<br>
+
+
+.pull-left[
+
+```
+<a href = "http://minedogucu.com">
+  Mine Dogucu</a>
+```
+]
+
+.pull-right[
+
+<a href = "http://minedogucu.com">Mine Dogucu</a>
+
+]
+
+---
+class: middle
+
+
+## markdown `r fontawesome::fa(name = "markdown", fill = "#4d2600")`
+
+<br>
+
+
+.pull-left[
+
+
+
+```
+[Mine Dogucu](http://minedogucu.com)
+```
+]
+
+.pull-right[
+
+[Mine Dogucu](http://minedogucu.com)
+]
+
+---
+class: inverse middle center
+
+.font150[R Markdown]
+
+---
+
+class: inverse middle center
+
+.font150[~~R~~ Markdown]
+
+---
+
+## markdown `r fontawesome::fa(name = "markdown", fill = "#4d2600")`
+
+<br>
+
+
+
+.pull-left[
+
+```
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+```
+]
+
+.pull-right[
+
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+]
+
+---
+
+class: inverse
+
+.font100[`r fontawesome::fa(name = "r-project", fill = "white")` = .R file]
+
+.font100[`r fontawesome::fa(name = "markdown", fill = "white")` = .md file]
+
+.font100[`r fontawesome::fa(name = "r-project", fill = "white")` + `r fontawesome::fa(name = "markdown", fill = "white")` = .Rmd file]
+
+---
+class: center middle
+
+#### markdown document
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/1-rmd-md.mp4" type="video/mp4">
+</video>
+
+---
+
+class: center middle
+
+#### R Markdown document
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/1-rmd-rmd.mp4" type="video/mp4">
+</video>
+
+---
+
+class: center middle
+
+#### YAML (Yet Another Markup Language)
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/1-rmd-yaml.mp4" type="video/mp4">
+</video>
+
+---
+
+### More YAML
+
+```yaml
+output:pdf_document
+```
+
+--
+
+```yaml
+output:
+  html_document:
+    toc: true
+```
+  
+--
+
+```yaml
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+```
+
+More in the [R Markdown book](https://bookdown.org/yihui/rmarkdown/html-document.html)
+
+---
+
+
+class: center middle
+
+#### Parameterized Reporting in R Markdown
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/1-rmd-params.mp4" type="video/mp4">
+</video>
+---
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/rmd-parts.jpeg')
+```
+
+---
+
+class: center middle
+
+### Starting a New R Markdown document
+
+File > New File > R Markdown
+
+---
+
+class: center middle
+
+## Add Chunk
+
+```{r echo=FALSE, out.width='50%'}
+knitr::include_graphics('img/code-chunk.png')
+```
+
+---
+
+class: center middle
+
+## Run the Current Chunk
+
+```{r echo=FALSE, out.width='20%'}
+knitr::include_graphics('img/run-code.png')
+```
+
+---
+
+class: center middle 
+
+## Knit
+
+```{r echo=FALSE, out.width='50%'}
+knitr::include_graphics('img/knit.png')
+```
+
+---
+
+class: middle center
+
+
+## Shortcuts
+
+|                            | Windows          | Mac              |
+|----------------------------|------------------|------------------|
+| add chunk                  | Ctrl + Alt + I   | Cmd + Option + I |
+| run the current chunk      | Ctrl + Alt + C   | Cmd + Option + C |
+| run current line/selection | Ctrl + Enter     | Cmd + Return     |
+| knit                       | Ctrl + Shift + K | Cmd + Shift + K  |
+
+
+---
+class: center middle 
+
+## (some) Chunk Options 
+
+<table align = "center">
+
+<tr>
+
+<td>echo = FALSE</td>
+<td>hides the code</td>
+
+</tr>
+
+<tr>
+
+<td>message = FALSE</td>
+<td>hides messages</td>
+
+</tr>
+
+<tr>
+
+<td>warning = FALSE</td>
+<td>hides warning</td>
+
+</tr>
+
+<tr>
+
+<td>error = TRUE</td>
+<td>renders despite errors and displays the error</td>
+
+</tr>
+
+<tr>
+
+<td>eval = FALSE</td>
+<td>code is not evaluated</td>
+
+</tr>
+
+<tr>
+
+<td> cache = TRUE</td>
+<td>will not run if it has been run before and <br> the output from previous run would be used</td>
+
+</tr>
+
+</table>
+ 
+
+---
+
+class: middle
+
+## My Slides
+
+Slides that you are currently looking at are also written in R Markdown. You can take a look at them on [GitHub repo](https://github.com/stats295r-fa20/adv-r-website/tree/master/slides) for the course website. They are made with xaringan package which we will talk more about later.
+

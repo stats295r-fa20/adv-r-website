@@ -1,0 +1,178 @@
+---
+title: "Introduction to git/hub"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+```{r echo = FALSE}
+library(fabricerin)
+```
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+class: center middle 
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('img/github-org.png')
+```
+
+---
+
+class: inverse middle center
+
+.font75[Who uses GitHub?]
+
+---
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/github-rmd.png')
+```
+
+---
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/moma.png')
+```
+
+---
+
+class: inverse center middle 
+
+.font75[version control]
+
+---
+
+hw1
+
+--
+
+hw1_final
+
+--
+
+hw1_final2
+
+--
+
+hw1_final3
+
+--
+
+hw1_finalwithfinalimages
+
+--
+
+hw1_finalestfinal
+
+---
+
+What if we tracked our file with a better names for each version?
+
+--
+
+hw1 **added name**
+
+--
+
+hw1 **added question 1 image**
+
+--
+
+hw1 **changed name/ added group mate**
+
+--
+
+hw1 **added first draft of all questions**
+
+--
+
+We will call the descriptions in bold **commit**.
+
+---
+class: middle 
+
+```{r echo=FALSE, out.width='40%',fig.align='center'}
+knitr::include_graphics('img/github-illustration.002.jpeg')
+```
+
+---
+
+```{r echo=FALSE, out.width='55%', fig.align='center'}
+knitr::include_graphics('img/github-illustration.003.jpeg')
+```
+
+---
+
+```{r echo=FALSE, out.width='55%', fig.align='center'}
+knitr::include_graphics('img/github-illustration.004.jpeg')
+```
+
+---
+
+```{r echo=FALSE, out.width='55%', fig.align='center'}
+knitr::include_graphics('img/github-illustration.005.jpeg')
+```
+
+---
+
+```{r echo=FALSE, out.width='55%', fig.align='center'}
+knitr::include_graphics('img/github-illustration.006.jpeg')
+```
+
+---
+
+```{r echo=FALSE, out.width='50%', fig.align='center'}
+knitr::include_graphics('img/github-illustration.007.jpeg')
+```
+---
+
+class: middle 
+
+### Art of commit messages that is learned with practice
+
+**Commit often** but not too often. If in doubt, commit often.
+
+---
+
+class: center middle
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/1-github-ssh.mp4" type="video/mp4">
+</video>
+
+---
+
+class: center middle
+
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/1-intro-github-screen.mp4" type="video/mp4">
+</video>
+
+---
+
+
+
+class: inverse middle center
+
+.font100[git it?]
+
+
+
