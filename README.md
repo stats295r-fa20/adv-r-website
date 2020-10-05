@@ -1,6 +1,3 @@
----
-permalink: /index.html
----
 
 ## STATS 295
 <img src="img/stats295-logo.png" alt="Stats 295 logo with an anteater illustration and text that reads STATS 295 (R)" width="150" align = "right"/>
