@@ -1,0 +1,133 @@
+---
+title: "Introduction to HTML and CSS"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: inverse middle 
+
+.font75[**H**yper**t**ext **M**arkup **L**anguage]
+
+---
+
+class: center middle
+
+## An ugly web page
+
+```{r echo = FALSE, out.width="80%", fig.align='center'}
+knitr::include_graphics("img/ugly-website.png")
+```
+
+
+---
+class: center middle
+
+### HTML document outline
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/2-html-start.mp4" type="video/mp4">
+</video>
+
+---
+
+class: center middle
+
+### Paragraphs
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/2-p-tag.mp4" type="video/mp4">
+</video>
+
+---
+
+class: center middle
+
+### Hyperlinks
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/2-a-tag.mp4" type="video/mp4">
+</video>
+---
+
+`<a href="https://www.r-project.org/">R</a>`
+
+<br>
+
+--
+
+.pull-left[`<a> </a>`] .pull-right[HTML tag]
+
+<br>
+
+--
+
+.pull-left[`href`] .pull-right[attribute (name)]
+
+<br>
+
+--
+
+.pull-left[`https://www.r-project.org/`].pull-right[attribute (value)]
+
+<br>
+
+--
+
+.pull-left[`R`] .pull-right[content]
+
+---
+
+class: center middle
+
+### Spans
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/2-span-tag.mp4" type="video/mp4">
+</video>
+
+
+---
+
+class: inverse middle
+
+.font75[**C**ascading **S**tyle **S**heets]
+
+
+---
+class: center middle
+
+### Styling
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/2-style-css.mp4" type="video/mp4">
+</video>
+
+
+---
+class: center middle
+
+```{r echo = FALSE, out.width="80%"}
+knitr::include_graphics(here::here("slides/week2/img/html-tree.jpeg"))
+```
+
