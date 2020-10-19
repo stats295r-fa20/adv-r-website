@@ -1,0 +1,766 @@
+---
+title: "Introduction to ggplot"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+```{r echo = FALSE, message=FALSE}
+xaringanExtra::use_panelset()
+library(palmerpenguins)
+library(tidyverse)
+library(titanic)
+library(janitor)
+titanic <- titanic_train %>% 
+  clean_names() %>% 
+  select(survived, pclass, sex, age, fare, embarked) %>% 
+  mutate(pclass = case_when(pclass == 1 ~ "First", 
+                            pclass == 2 ~ "Second",
+                            pclass == 3 ~ "Third"),
+         embarked = case_when(embarked == "S" ~ "Southampton",
+                              embarked == "C" ~ "Cherbourg",
+                              embarked == "Q" ~ "Queenstown"),
+         embarked = as.factor(embarked),
+         sex = as.factor("sex"),
+         survived = as.logical(survived))
+```
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+
+---
+
+class: middle 
+
+- This specific lecture will not necessarily show you beautiful plots. 
+
+--
+
+- In this lecture we will focus on how ggplot works. 
+
+--
+
+- In the next lecture we will improve the plots that we make.
+
+---
+
+center: invisible 
+
+__gg__plot is based on __g__rammar of __g__raphics.
+
+```{r echo = FALSE}
+knitr::include_graphics("img/grammar_graphics.jpeg")
+```
+
+---
+
+## Data
+
+```{r}
+glimpse(titanic)
+```
+
+.footnote[The data frame has been cleaned for you.]
+
+---
+
+class:inverse middle
+
+.font75[Visualizing a Single Categorical Variable]
+
+---
+
+class: middle
+
+**3 Steps of Making a Basic ggplot**
+
+1.Pick data
+
+2.Map data onto aesthetics
+
+
+3.Add the geometric layer
+
+
+
+---
+class: middle
+
+### Step 1 - Pick Data
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(data = titanic)
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(titanic)
+```
+
+]
+
+---
+
+class: middle
+
+### Step 2 - Map Data to Aesthetics
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = pclass)) #<<
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = pclass))
+```
+
+]
+
+---
+
+class: middle
+
+### Step 3 - Add the Geometric Layer
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = pclass)) +
+  geom_bar() #<<
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = pclass)) +
+  geom_bar()
+```
+]
+---
+
+class: middle 
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = pclass)) +
+  geom_bar()
+```
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `titanic` data frame.
+- Map the `fare` to the x-axis. 
+- Add a layer of a bar plot.
+
+]
+
+.panel[
+.panel-name[R]
+```{r eval = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = pclass)) +
+  geom_bar()
+```
+
+]
+
+]
+---
+
+class:inverse middle
+
+.font75[Visualizing a Single Numeric Variable]
+
+---
+
+class: middle
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram() 
+```
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `titanic` data frame.
+- Map the `fare` to the x-axis. 
+- Add a layer of a histogram.
+
+]
+
+.panel[
+.panel-name[R]
+```{r eval = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram() 
+```
+
+]
+
+]
+
+---
+class: middle
+
+### Step 1 - Pick Data
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(data = titanic)
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(titanic)
+```
+
+]
+
+---
+
+class: middle
+
+### Step 2 - Map Data to Aesthetics
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = fare)) #<<
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = fare))
+```
+
+]
+
+---
+
+class: middle
+
+### Step 3 - Add the Geometric Layer
+
+.pull-left[
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram() #<<
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram()
+```
+]
+
+---
+
+## What is this warning?
+
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram()
+```
+
+---
+
+
+```{r fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15) #<<
+```
+
+
+---
+
+class: middle
+
+
+.panelset[
+.panel[.panel-name[binwidth = 15]
+
+.left-panel[
+
+
+]
+
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15)
+```
+
+]
+
+.panel[.panel-name[binwidth = 50]
+
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 50)
+```
+
+]
+
+.panel[.panel-name[binwidth = 100]
+
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 100)
+```
+
+]
+
+
+]
+
+---
+
+class: middle center
+
+[There is no "best" number of bins](https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width)
+
+
+---
+
+class: middle center
+
+
+.font150[
+`r emojifont::emoji(emojifont::search_emoji('rainbow'))[1]`
+] 
+
+Pick your favorite color(s) from the list at:
+
+[bit.ly/colors-r](https://bit.ly/colors-r)
+
+---
+
+```{r fig.align='center', fig.height=5}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15, 
+                 color = "white") #<<
+```
+
+---
+
+```{r fig.align='center', fig.height=5}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15, 
+                 fill = "darkred") #<<
+```
+
+---
+
+```{r fig.align='center', fig.height=5}
+ggplot(data = titanic,
+       aes(x = fare)) +
+  geom_histogram(binwidth = 15, 
+                 color = "white", #<<
+                 fill = "darkred") #<<
+```
+
+---
+
+class: inverse middle center
+
+.font75[Visualizing Two Categorical Variables]
+
+---
+
+## Stacked Bar-Plot
+
+.pull-left[
+
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = pclass, 
+           fill = survived)) + #<<
+  geom_bar() 
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = pclass, 
+           fill = survived)) +
+  geom_bar()
+```
+]
+
+---
+
+## Standardized Bar Plot
+
+.pull-left[
+
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = pclass, 
+           fill = survived)) + 
+  geom_bar(position = "fill") #<<
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = pclass, fill = survived)) +
+  geom_bar(position = "fill")
+```
+]
+
+.footnote[Note that y-axis is no longer count but we will learn how to change that later.]
+
+---
+
+## Dodged Bar Plot
+
+.pull-left[
+
+```{r eval = FALSE}
+ggplot(data = titanic,
+       aes(x = pclass, 
+           fill = survived)) + 
+  geom_bar(position = "dodge") #<<
+```
+]
+
+.pull-right[
+
+```{r echo = FALSE, fig.height=5}
+ggplot(data = titanic,
+       aes(x = pclass, fill = survived)) +
+  geom_bar(position = "dodge")
+```
+]
+
+.footnote[Note that y-axis is no longer count but we will change that later.]
+
+
+---
+
+## New Data
+
+```{r echo = FALSE, fig.align='center', fig.height=0.3}
+knitr::include_graphics("img/penguins.png")
+```
+
+.footnote[Artwork by [@allison_horst](https://twitter.com/allison_horst) ]
+
+---
+
+## New Data
+
+```{r}
+glimpse(penguins)
+```
+
+---
+
+```{r echo = FALSE, fig.align='center'}
+knitr::include_graphics("img/penguin_bill.png")
+```
+
+.footnote[Artwork by [@allison_horst](https://twitter.com/allison_horst) ]
+
+
+---
+class: middle inverse
+
+.font75[Visualizing a single numerical and single categorical variable.]
+
+---
+
+class: middle 
+
+.panelset[
+
+.panel[
+.panel-name[Plot]
+```{r echo = FALSE, fig.height=5, fig.align='center'}
+ggplot(penguins,
+       aes(x = species,
+           y = bill_length_mm))  +
+  geom_violin()
+```
+
+]
+
+.panel[
+.panel-name[English]
+
+- Create a ggplot using the `penguins` data frame.
+- Map the `species` to the x-axis and `bill_length_mm` to the y-axis. 
+- Add a layer of a violin plot.
+
+]
+
+.panel[
+.panel-name[R]
+```{r eval = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = species,
+           y = bill_length_mm))  +
+  geom_violin()
+```
+
+]
+
+]
+
+
+
+---
+
+.pull-left[
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+ggplot(penguins,
+       aes(x = species,
+           y = bill_length_mm))  +
+  geom_violin() +
+  theme(text = element_text(size=20))
+
+```
+
+]
+
+.pull-right[
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_length_mm))  +
+  geom_histogram() +
+  facet_wrap(~species) +
+  coord_flip() +
+  theme(text = element_text(size=20))
+
+```
+]
+
+---
+class: inverse middle
+
+.font75[Visualizing Two Numerical Variables]
+
+---
+
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm))  +
+  geom_point()
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm))  +
+  geom_point()
+```
+
+]
+
+
+---
+
+class: middle inverse
+
+.font75[Considering More Than Two Variables]
+
+---
+
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color= species))  +
+  geom_point()
+```
+
+]
+
+
+---
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species))  +
+  geom_point()
+```
+
+]
+
+---
+
+
+
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species))  +
+  geom_point()
+```
+
+]
+
+---
+
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species))  +
+  geom_point()
+```
+
+]
+
+
+---
+
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species,
+           size = body_mass_g)) +
+  geom_point()
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species,
+           size = body_mass_g))  +
+  geom_point()
+```
+]
+
+---
+
+```{r echo = FALSE, out.width ="95%"}
+knitr::include_graphics("img/ggplot-summary.jpeg")
+```
+

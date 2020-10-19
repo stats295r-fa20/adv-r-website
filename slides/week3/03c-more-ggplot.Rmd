@@ -1,0 +1,535 @@
+---
+title: "More ggplot"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+
+
+
+```{r echo = FALSE, message=FALSE}
+xaringanExtra::use_panelset()
+library(palmerpenguins)
+library(tidyverse)
+library(titanic)
+library(janitor)
+library(scales)
+library(fivethirtyeight)
+titanic <- titanic_train %>% 
+  clean_names() %>% 
+  select(survived, pclass, sex, age, fare, embarked) %>% 
+  mutate(pclass = case_when(pclass == 1 ~ "First", 
+                            pclass == 2 ~ "Second",
+                            pclass == 3 ~ "Third"),
+         embarked = case_when(embarked == "S" ~ "Southampton",
+                              embarked == "C" ~ "Cherbourg",
+                              embarked == "Q" ~ "Queenstown"),
+         embarked = as.factor(embarked),
+         sex = as.factor("sex"),
+         survived = as.logical(survived))
+```
+
+
+
+
+---
+
+class: middle 
+ 
+
+.panelset[
+.panel[
+
+.panel-name[Plot]
+
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) 
+```
+
+]
+
+.panel[
+
+.panel-name[English]
+- Using the `penguins` data,   
+- Map `bill depth` to x-axis, `bill length` to y-axis, `species` to shape and color.
+- Add a layer of points and set the size of the points to 4.
+]
+
+.panel[
+.panel-name[R]
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) 
+```
+
+]
+
+]
+
+
+---
+class: middle 
+
+## Labs
+
+
+.panelset[
+.panel[
+
+.panel-name[Plot]
+
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  labs(x = "Bill Depth (mm)", #<<
+       y = "Bill Length (mm)", #<<
+       title = "Palmer Penguins") #<<
+```
+
+]
+
+.panel[
+
+.panel-name[English]
+- Using the `penguins` data,   
+- Map `bill depth` to x-axis, `bill length` to y-axis, `species` to shape.
+- Add a layer of points and set the size of the points to 4.
+- .highlight-text[Add labels to x-axis (Bill Depth(mm)), y-axis (Bill Length(mm)), and the title of the plot (Palmer Penguins).]
+
+
+
+.panel[
+.panel-name[R]
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  labs(x = "Bill Depth (mm)", #<<
+       y = "Bill Length (mm)", #<<
+       title = "Palmer Penguins") #<<
+```
+
+]
+
+]
+
+
+
+]
+
+---
+
+.left-panel[
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_bw() #<<
+  
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE, fig.height=5, warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_bw()
+```
+
+]
+
+---
+
+class: middle
+
+## Themes
+
+.panelset[
+
+
+.panel[
+
+.panel-name[`theme_gray()`]
+
+```{r echo = FALSE, fig.height=4, fig.align='center', warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_gray()
+```
+
+]
+
+.panel[
+
+.panel-name[`theme_bw()`]
+
+```{r echo = FALSE, fig.height=4, fig.align='center', warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_bw()
+```
+
+]
+
+.panel[
+
+.panel-name[`theme_classic()`]
+
+```{r echo = FALSE, fig.height=4, fig.align='center', warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_classic()
+```
+
+]
+
+.panel[
+
+.panel-name[`theme_dark()`]
+
+```{r echo = FALSE, fig.height=4, fig.align='center', warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_dark()
+```
+
+]
+
+.panel[
+.panel-name[`theme_minimal()`]
+
+```{r echo = FALSE, fig.height=4, fig.align='center', warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_minimal()
+```
+
+]
+
+
+.panel[
+.panel-name[`theme_void()`]
+
+```{r echo = FALSE, fig.height=4, fig.align='center', warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_void()
+```
+
+]
+]
+
+---
+
+.left-panel[
+
+```{r eval = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_bw() +
+  theme(text = element_text(size=20)) #<<
+  
+```
+
+]
+
+.right-panel[
+
+```{r echo = FALSE, fig.height=5, warning = FALSE}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)",
+       y = "Bill Length (mm)",
+       title = "Palmer Penguins") +
+  theme_bw() +
+  theme(text = element_text(size=20))
+```
+]
+
+
+---
+
+```{r eval = FALSE}
+?theme
+```
+
+
+---
+
+class: middle 
+ 
+
+.left-panel[
+
+```{r eval = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  facet_grid(.~species) #<<
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  facet_grid(.~species)
+```
+]
+
+---
+
+class: middle 
+ 
+
+.left-panel[
+
+```{r eval = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  facet_grid(species~.) #<<
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  facet_grid(species~.)
+```
+]
+
+---
+
+class: middle 
+ 
+
+`library(scales)`
+
+.left-panel[
+
+```{r eval = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  scale_x_continuous(breaks = breaks_width(2)) 
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  scale_x_continuous(breaks = breaks_width(2)) 
+  
+```
+]
+
+---
+
+class: middle 
+ 
+
+`library(scales)`
+
+.left-panel[
+
+```{r eval = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  scale_x_continuous(breaks = c(18.5, 20)) 
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  scale_x_continuous(breaks = c(18.5, 20)) 
+  
+```
+]
+
+---
+
+
+class: middle 
+ 
+
+`library(scales)`
+
+.left-panel[
+
+```{r eval = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  scale_x_continuous(breaks = c(18.5, 20)) +
+  scale_color_manual(values = c("firebrick",
+                                "deepskyblue4",
+                                "goldenrod"))
+```
+
+]
+
+.right-panel[
+```{r echo = FALSE, fig.align='center', warning = FALSE, fig.height=5}
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) +
+  scale_color_manual(values = c("firebrick",
+                                "deepskyblue4",
+                                "goldenrod"))
+  
+```
+]
+
+
+
+--
+
+Check out [the ggplot flipbook](https://evamaerey.github.io/ggplot_flipbook/ggplot_flipbook_xaringan.html#1) for some inspiration. 
+
