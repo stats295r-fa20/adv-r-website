@@ -1,0 +1,228 @@
+---
+title: "The Pipe Operator"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+```{r echo = FALSE}
+library(magrittr)
+```
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: inverse middle
+
+.font50[Three solutions to a single problem]
+
+---
+
+class: middle
+
+What is the average of 4, 8, 16 approximately?
+
+---
+
+class: middle
+
+1.What is the average of **4, 8, 16** approximately?
+
+---
+
+class: middle
+
+2.What is the **average** of 4, 8, 16 approximately?
+
+---
+
+class: middle
+
+3.What is the average of 4, 8, 16 **approximately**?
+
+---
+
+class: middle inverse
+
+.font50[Solution 1: Functions within Functions]
+
+---
+
+```{r}
+c(4, 8, 16)
+```
+
+--
+
+<hr>
+
+```{r}
+mean(c(4, 8, 16))
+```
+
+--
+
+<hr>
+
+```{r}
+round(mean(c(4, 8, 16)))
+```
+
+---
+
+class: middle
+
+**Problem with writing functions within functions**
+
+Things will get messy and more difficult to read and debug as we deal with more complex operations on data.
+
+---
+
+class: middle inverse
+
+.font50[Solution 2: Creating Objects]
+
+---
+
+class: middle
+
+```{r}
+numbers <- c(4, 8, 16)
+numbers
+```
+
+--
+
+<hr>
+
+```{r}
+avg_number <- mean(numbers)
+avg_number
+```
+
+--
+
+<hr>
+
+```{r}
+round(avg_number)
+```
+
+---
+
+class: middle
+
+**Problem with creating many objects**
+
+We will end up with too many objects in `Environment`. 
+
+---
+
+class: middle inverse
+
+.font50[Solution 3: The (forward) Pipe Operator %>% ]
+
+---
+
+class: middle
+
+.font75[Shortcut: <br>Ctrl (Command) + Shift + M]
+
+---
+class: middle
+
+.pull-left[
+```{r}
+c(4, 8, 16) %>% 
+  mean() %>% 
+  round()
+```
+<br>
+]
+
+.pull-right[
+
+Combine 4, 8, and 16 `and then`  
+Take the mean   `and then`  
+Round the output
+
+
+
+]
+
+--
+
+.pull-right[The output of a function becomes the first argument of the next function].
+
+
+---
+
+Do you recall composite functions such as $f \circ g(x)$?
+
+--
+
+Now we have $f \circ g \circ h (x)$ or `round(mean(c(4, 8, 16)))`
+
+--
+
+.pull-left[
+
+```{r eval = FALSE}
+h(x) %>% 
+  g() %>% 
+  f()
+```
+
+]
+
+.pull-right[
+
+```{r eval = FALSE}
+c(4, 8, 16) %>% 
+  mean() %>% 
+  round()
+```
+
+]
+
+---
+
+## Fun fact
+
+.left-panel[
+```{r message = FALSE}
+library(magrittr)
+```
+
+```{r echo=FALSE, out.width='40%', fig.align='center'}
+knitr::include_graphics('img/pipe-logo.png')
+```
+]
+
+.right-panel[
+[Treachery of Images](https://en.wikipedia.org/wiki/The_Treachery_of_Images#/media/File:MagrittePipe.jpg) by René Magritte
+
+```{r echo=FALSE, out.width='70%', fig.align='center'}
+knitr::include_graphics('img/magritte.jpg')
+```
+
+.footnote[Image for Treachery of Images is from University of Alabama [website](https://tcf.ua.edu/Classes/Jbutler/T311/Modernism.htm) and used under fair use for educational purposes.]
+]
+

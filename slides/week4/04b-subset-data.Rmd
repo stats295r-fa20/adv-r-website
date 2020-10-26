@@ -1,0 +1,302 @@
+---
+title: "Subsetting Data"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+```{r child = "../setup.Rmd"}
+```
+
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+options(scipen = 999)
+```
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+```{r echo = FALSE, message = FALSE}
+lapd <- read_csv(here::here("slides/data/Police_Payroll.csv")) %>% 
+  janitor::clean_names()
+```
+
+
+```{r}
+glimpse(lapd)
+```
+
+---
+
+```{r}
+colnames(lapd)
+```
+
+---
+
+## subsetting variables/columns
+
+```{r echo = FALSE, out.width="80%"}
+knitr::include_graphics("img/data-wrangle.001.jpeg")
+```
+
+--
+
+`select()`
+
+---
+
+## subsetting observations/rows
+
+```{r echo = FALSE, out.width="80%"}
+knitr::include_graphics("img/data-wrangle.002.jpeg")
+```
+
+`slice()` and `filter()` 
+
+---
+
+`select` is used to select certain variables in the data frame. 
+
+
+.left-panel[
+```{r}
+select(lapd, year, base_pay)
+```
+]
+
+--
+
+.right-panel[
+
+```{r}
+lapd %>% 
+  select(year, base_pay)
+```
+
+]
+
+---
+
+`select` can also be used to drop certain variables if used with a negative sign.
+
+```{r}
+select(lapd, -row_id, -department_title)
+```
+
+---
+
+## Selection helpers
+
+`starts_with()`  
+`ends_with()`  
+`contains()`  
+
+---
+
+```{r}
+select(lapd, starts_with("q"))
+```
+
+---
+
+```{r}
+select(lapd, ends_with("pay"))
+```
+
+---
+
+```{r}
+select(lapd, contains("pay"))
+```
+
+---
+
+## subsetting variables/columns
+
+```{r echo = FALSE, out.width="80%"}
+knitr::include_graphics("img/data-wrangle.001.jpeg")
+```
+
+--
+
+`select()`
+
+---
+
+## subsetting observations/rows
+
+```{r echo = FALSE, out.width="80%"}
+knitr::include_graphics("img/data-wrangle.002.jpeg")
+```
+
+`slice()` and `filter()` 
+
+---
+
+.pull-left[
+`slice()` subsetting rows based on a row number.
+
+The data below include all the rows from third to seventh. Including third and seventh.
+
+```{r}
+slice(lapd, 3:7)
+```
+
+
+]
+
+--
+
+.pull-right[
+
+`filter()` subsetting rows based on a condition.
+
+The data below includes rows when the recorded year is 2018.
+
+```{r}
+filter(lapd, year == 2018)
+```
+
+]
+
+---
+
+.pull-left[
+
+### Relational Operators in R
+
+
+| Operator | Description              |
+|----------|--------------------------|
+| <        | Less than                |
+| >        | Greater than             |
+| <=       | Less than or equal to    |
+| >=       | Greater than or equal to |
+| ==       | Equal to                 |
+| !=       | Not equal to             |
+
+]
+
+.pull-right[
+
+### Logical Operators in R
+
+| Operator | Description |
+|----------|-------------|
+| &        | and         |
+| &#124;   | or          |
+
+]
+
+---
+
+class: middle
+
+Q. According to [datausa.io](https://datausa.io/profile/geo/los-angeles-ca#:~:text=In%202018%2C%20Los%20Angeles%2C%20CA,%2462%2C474%2C%20a%203.78%25%20increase.) Los Angeles had a median household income of $62474 in 2018. How many LAPD staff members had a base pay higher than $62474 in year 2018 according to this data?
+
+.footnote[Median household income is **not** the same thing as median employee income. Our aim is data wrangling and not necessarily statistical analysis for now.]
+
+---
+
+```{r}
+lapd %>% 
+  filter(year == 2018 & base_pay > 62474)
+```
+
+
+---
+
+
+```{r}
+lapd %>% 
+  filter(year == 2018 & base_pay > 62474) %>% 
+  nrow()
+```
+
+---
+
+Q. How many observations are available between 2013 and 2015 including 2013 and 2015?
+
+--
+
+```{r}
+lapd %>% 
+  filter(year >= 2013 & year <= 2015)
+```
+
+---
+
+Q. How many observations are available between 2013 and 2015 including 2013 and 2015?
+
+
+
+```{r}
+lapd %>% 
+  filter(year >= 2013 & year <= 2015) %>% 
+  nrow()
+```
+
+---
+
+Q. How many LAPD staff were employed full time in 2018?
+
+
+
+```{r}
+lapd %>% 
+  filter(employment_type == "Full Time" & year == 2018) %>% 
+  nrow()
+```
+
+---
+
+We have done all sorts of selections, slicing, filtering on `lapd` but it has not changed at all. Why do you think so?
+
+```{r}
+glimpse(lapd)
+```
+
+---
+
+Moving forward we are only going to focus on year 2018, and use `job_class_title`, `employment_type`, and `base_pay`. Let's clean our data accordingly and move on with the smaller `lapd` data that we need.
+
+---
+
+```{r}
+lapd %>% 
+  filter(year == 2018) %>% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay)
+```
+
+---
+
+```{r}
+lapd <- 
+  lapd %>% 
+  filter(year == 2018) %>% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay)
+```
+

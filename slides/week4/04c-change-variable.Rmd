@@ -1,0 +1,213 @@
+---
+title: "Changing Variables"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+```{r child = "../setup.Rmd"}
+```
+
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+options(scipen = 999)
+```
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+```{r echo = FALSE, message = FALSE}
+lapd <- read_csv(here::here("slides/data/Police_Payroll.csv")) %>% 
+  janitor::clean_names() %>% 
+  filter(year == 2018) %>% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay)
+```
+
+
+
+```{r}
+glimpse(lapd)
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_k` that represents `base_pay` in thousand dollars.
+
+---
+
+```{r}
+lapd %>% 
+  mutate(base_pay_k = base_pay/1000)
+```
+
+
+---
+
+```{r}
+glimpse(lapd)
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_level` which has `Less Than Median`, `Greater Than Median`. We will consider $62474 as the median (from previous lecture).
+
+---
+
+
+Let's first check to see there is anyone earning exactly the median value.
+
+```{r}
+lapd %>% 
+  filter(base_pay == 62474)
+```
+
+
+---
+
+```{r}
+lapd %>% 
+  mutate(base_pay_level = if_else(base_pay < 62474, 
+                                  "Less Than Median", 
+                                  "Greater Than Median"))
+```
+
+
+---
+
+
+```{r}
+glimpse(lapd)
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_level` which has `Less Than 0`, `No Income`, `Less than Median and Greater than 0` and `Greater than Median`. We will consider $62474 as the median (from previous lecture).
+
+
+
+---
+
+```{r}
+lapd %>% 
+  mutate(base_pay_level = case_when(
+    base_pay < 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay < 62474 & base_pay > 0 ~ "Less than Median, Greater than 0",
+    base_pay > 62474 ~ "Greater than Median")) 
+```
+
+---
+
+To see what we have created 
+
+```{r}
+lapd %>% 
+  mutate(base_pay_level = case_when(
+    base_pay < 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay < 62474 & base_pay > 0 ~ "Less than Median, Greater than 0",
+    base_pay > 62474 ~ "Greater than Median")) %>% 
+  select(base_pay_level)
+```
+
+
+---
+
+We can use pipes with ggplot too!
+
+.left-panel[
+```{r eval = FALSE}
+lapd %>% 
+  mutate(base_pay_level = case_when(
+    base_pay < 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay < 62474 & base_pay > 0 ~ "Less than Median, Greater than 0",
+    base_pay > 62474 ~ "Greater than Median")) %>% 
+  select(base_pay_level) %>% 
+  ggplot(aes(x = base_pay_level)) +
+  geom_bar()
+```
+]
+
+.right-panel[
+```{r echo = FALSE}
+lapd %>% 
+  mutate(base_pay_level = case_when(
+    base_pay < 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay < 62474 & base_pay > 0 ~ "Less than Median, Greater than 0",
+    base_pay > 62474 ~ "Greater than Median")) %>% 
+  select(base_pay_level) %>% 
+  ggplot(aes(x = base_pay_level)) +
+  geom_bar()
+```
+]
+
+---
+
+```{r}
+glimpse(lapd)
+```
+
+**Goal**: 
+
+Make `job_class_title` and `employment_type` factor variables. 
+
+
+---
+
+```{r}
+lapd %>% 
+  mutate(employment_type = as.factor(employment_type),
+         job_class_title = as.factor(job_class_title)) 
+```
+
+---
+
+`as.factor()` - makes a vector factor  
+`as.numeric()` - makes a vector numeric  
+`as.integer()` - makes a vector integer  
+`as.double()` - makes a vector double  
+`as.character()` - makes a vector character  
+
+---
+
+class: middle
+
+Once again we did not "save"
+anything into `lapd`. As we work on data cleaning it makes sense not to "save" the data frames. Once we see the final data frame we want then we can "save" (i.e. overwrite) it.
+
+---
+
+```{r}
+lapd <- 
+  lapd %>% 
+    mutate(employment_type = as.factor(employment_type),
+           job_class_title = as.factor(job_class_title),
+           base_pay_level = case_when(
+             base_pay < 0 ~ "Less than 0", 
+             base_pay == 0 ~ "No Income",
+             base_pay < 62474 & base_pay > 0 ~ "Less than Median, Greater than 0",
+             base_pay > 62474 ~ "Greater than Median")) 
+```
+

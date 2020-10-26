@@ -1,0 +1,284 @@
+---
+title: "Data Joins"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: ["slide-style.css"]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+```{r child = "../setup.Rmd"}
+```
+
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+options(scipen = 999)
+xaringanExtra::use_panelset()
+
+artists <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "artist")
+songs <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "top_song")
+albums <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "album") %>% 
+  mutate(album_release_date = lubridate::ymd(album_release_date))
+```
+
+
+<br>
+<br>
+.right-panel[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+
+---
+
+.panelset[
+.panel[
+.panel-name[artists]
+
+```{r}
+artists
+```
+
+
+]
+
+.panel[
+.panel-name[songs]
+
+```{r}
+songs
+```
+
+
+]
+
+.panel[
+.panel-name[albums]
+
+```{r}
+albums
+```
+
+]
+]
+
+---
+
+## Join Functions
+
+`something_join(x, y)` All the join functions in dplyr package are in this fashion where x represents the first data frame and y represents the second data frame.
+
+
+---
+
+.panelset[
+.panel[
+
+.panel-name[x]
+
+```{r}
+songs
+```
+
+
+]
+
+.panel[
+
+.panel-name[y]
+
+```{r}
+albums
+```
+
+
+]
+
+.panel[
+
+.panel-name[right_join()]
+
+```{r}
+right_join(songs, albums, by = "album_name")
+```
+
+]
+
+]
+
+`right_join()` includes all rows from `y`
+---
+
+.panelset[
+.panel[
+
+.panel-name[x]
+
+```{r}
+songs
+```
+
+
+]
+
+.panel[
+
+.panel-name[y]
+
+```{r}
+albums
+```
+
+
+]
+
+.panel[
+
+.panel-name[left_join()]
+
+```{r}
+left_join(songs, albums, by = "album_name")
+```
+
+]
+
+]
+
+`left_join()` includes all rows from x
+
+
+---
+
+.panelset[
+.panel[
+
+.panel-name[x]
+
+```{r}
+songs
+```
+
+
+]
+
+.panel[
+
+.panel-name[y]
+
+```{r}
+albums
+```
+
+
+]
+
+.panel[
+
+.panel-name[inner_join()]
+
+```{r}
+inner_join(songs, albums, by = "album_name")
+```
+
+]
+
+]
+
+`inner_join()` includes all rows that are in x **and** y
+
+---
+
+.panelset[
+.panel[
+
+.panel-name[x]
+
+```{r}
+songs
+```
+
+
+]
+
+.panel[
+
+.panel-name[y]
+
+```{r}
+albums
+```
+
+
+]
+
+.panel[
+
+.panel-name[full_join()]
+
+```{r}
+full_join(songs, albums, by = "album_name")
+```
+
+]
+
+]
+
+`full_join()` includes all rows that are in x **or** y
+
+---
+
+
+.panelset[
+.panel[
+.panel-name[artists]
+
+```{r}
+artists
+```
+
+
+]
+
+.panel[
+.panel-name[songs]
+
+```{r}
+songs
+```
+
+
+]
+
+.panel[
+.panel-name[albums]
+
+```{r}
+albums
+```
+
+]
+
+.panel[
+.panel-name[combined]
+
+```{r}
+full_join(artists, songs, by = "name") %>% 
+  full_join(albums, by = "album_name")
+  
+```
+
+
+]
+
+
+]

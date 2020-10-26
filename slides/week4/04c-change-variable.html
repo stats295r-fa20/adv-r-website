@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Changing Variables</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <link rel="stylesheet" href="slide-style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide
+
+
+
+
+
+
+
+
+
+&lt;br&gt;
+&lt;br&gt;
+.right-panel[ 
+
+# Changing Variables
+## Dr. Mine Dogucu
+]
+
+---
+
+
+
+
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergeant I", "Police L…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time", "Full Time", "…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676.87, 109373.63,…
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_k` that represents `base_pay` in thousand dollars.
+
+---
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_k = base_pay/1000)
+```
+
+```
+## # A tibble: 14,824 x 4
+##    job_class_title                  employment_type base_pay base_pay_k
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.      119. 
+##  2 Police Sergeant I                Full Time        113271.      113. 
+##  3 Police Lieutenant II             Full Time        148116       148. 
+##  4 Police Service Representative II Full Time         78677.       78.7
+##  5 Police Officer III               Full Time        109374.      109. 
+##  6 Police Officer II                Full Time         95002.       95.0
+##  7 Police Officer II                Full Time         95379.       95.4
+##  8 Police Officer II                Full Time         95388.       95.4
+##  9 Equipment Mechanic               Full Time         80496        80.5
+## 10 Detention Officer                Full Time         69640        69.6
+## # … with 14,814 more rows
+```
+
+
+---
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergeant I", "Police L…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time", "Full Time", "…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676.87, 109373.63,…
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_level` which has `Less Than Median`, `Greater Than Median`. We will consider $62474 as the median (from previous lecture).
+
+---
+
+
+Let's first check to see there is anyone earning exactly the median value.
+
+
+```r
+lapd %&gt;% 
+  filter(base_pay == 62474)
+```
+
+```
+## # A tibble: 0 x 3
+## # … with 3 variables: job_class_title &lt;chr&gt;, employment_type &lt;chr&gt;,
+## #   base_pay &lt;dbl&gt;
+```
+
+
+---
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = if_else(base_pay &lt; 62474, 
+                                  "Less Than Median", 
+                                  "Greater Than Median"))
+```
+
+```
+## # A tibble: 14,824 x 4
+##    job_class_title                  employment_type base_pay base_pay_level     
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;              
+##  1 Police Detective II              Full Time        119322. Greater Than Median
+##  2 Police Sergeant I                Full Time        113271. Greater Than Median
+##  3 Police Lieutenant II             Full Time        148116  Greater Than Median
+##  4 Police Service Representative II Full Time         78677. Greater Than Median
+##  5 Police Officer III               Full Time        109374. Greater Than Median
+##  6 Police Officer II                Full Time         95002. Greater Than Median
+##  7 Police Officer II                Full Time         95379. Greater Than Median
+##  8 Police Officer II                Full Time         95388. Greater Than Median
+##  9 Equipment Mechanic               Full Time         80496  Greater Than Median
+## 10 Detention Officer                Full Time         69640  Greater Than Median
+## # … with 14,814 more rows
+```
+
+
+---
+
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergeant I", "Police L…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time", "Full Time", "…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676.87, 109373.63,…
+```
+
+**Goal**: 
+
+Create a new variable called `base_pay_level` which has `Less Than 0`, `No Income`, `Less than Median and Greater than 0` and `Greater than Median`. We will consider $62474 as the median (from previous lecture).
+
+
+
+---
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = case_when(
+    base_pay &lt; 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+    base_pay &gt; 62474 ~ "Greater than Median")) 
+```
+
+```
+## # A tibble: 14,824 x 4
+##    job_class_title                  employment_type base_pay base_pay_level     
+##    &lt;chr&gt;                            &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;              
+##  1 Police Detective II              Full Time        119322. Greater than Median
+##  2 Police Sergeant I                Full Time        113271. Greater than Median
+##  3 Police Lieutenant II             Full Time        148116  Greater than Median
+##  4 Police Service Representative II Full Time         78677. Greater than Median
+##  5 Police Officer III               Full Time        109374. Greater than Median
+##  6 Police Officer II                Full Time         95002. Greater than Median
+##  7 Police Officer II                Full Time         95379. Greater than Median
+##  8 Police Officer II                Full Time         95388. Greater than Median
+##  9 Equipment Mechanic               Full Time         80496  Greater than Median
+## 10 Detention Officer                Full Time         69640  Greater than Median
+## # … with 14,814 more rows
+```
+
+---
+
+To see what we have created 
+
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = case_when(
+    base_pay &lt; 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+    base_pay &gt; 62474 ~ "Greater than Median")) %&gt;% 
+  select(base_pay_level)
+```
+
+```
+## # A tibble: 14,824 x 1
+##    base_pay_level     
+##    &lt;chr&gt;              
+##  1 Greater than Median
+##  2 Greater than Median
+##  3 Greater than Median
+##  4 Greater than Median
+##  5 Greater than Median
+##  6 Greater than Median
+##  7 Greater than Median
+##  8 Greater than Median
+##  9 Greater than Median
+## 10 Greater than Median
+## # … with 14,814 more rows
+```
+
+
+---
+
+We can use pipes with ggplot too!
+
+.left-panel[
+
+```r
+lapd %&gt;% 
+  mutate(base_pay_level = case_when(
+    base_pay &lt; 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+    base_pay &gt; 62474 ~ "Greater than Median")) %&gt;% 
+  select(base_pay_level) %&gt;% 
+  ggplot(aes(x = base_pay_level)) +
+  geom_bar()
+```
+]
+
+.right-panel[
+![](04c-change-variable_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+]
+
+---
+
+
+```r
+glimpse(lapd)
+```
+
+```
+## Rows: 14,824
+## Columns: 3
+## $ job_class_title &lt;chr&gt; "Police Detective II", "Police Sergeant I", "Police L…
+## $ employment_type &lt;chr&gt; "Full Time", "Full Time", "Full Time", "Full Time", "…
+## $ base_pay        &lt;dbl&gt; 119321.60, 113270.70, 148116.00, 78676.87, 109373.63,…
+```
+
+**Goal**: 
+
+Make `job_class_title` and `employment_type` factor variables. 
+
+
+---
+
+
+```r
+lapd %&gt;% 
+  mutate(employment_type = as.factor(employment_type),
+         job_class_title = as.factor(job_class_title)) 
+```
+
+```
+## # A tibble: 14,824 x 3
+##    job_class_title                  employment_type base_pay
+##    &lt;fct&gt;                            &lt;fct&gt;              &lt;dbl&gt;
+##  1 Police Detective II              Full Time        119322.
+##  2 Police Sergeant I                Full Time        113271.
+##  3 Police Lieutenant II             Full Time        148116 
+##  4 Police Service Representative II Full Time         78677.
+##  5 Police Officer III               Full Time        109374.
+##  6 Police Officer II                Full Time         95002.
+##  7 Police Officer II                Full Time         95379.
+##  8 Police Officer II                Full Time         95388.
+##  9 Equipment Mechanic               Full Time         80496 
+## 10 Detention Officer                Full Time         69640 
+## # … with 14,814 more rows
+```
+
+---
+
+`as.factor()` - makes a vector factor  
+`as.numeric()` - makes a vector numeric  
+`as.integer()` - makes a vector integer  
+`as.double()` - makes a vector double  
+`as.character()` - makes a vector character  
+
+---
+
+class: middle
+
+Once again we did not "save"
+anything into `lapd`. As we work on data cleaning it makes sense not to "save" the data frames. Once we see the final data frame we want then we can "save" (i.e. overwrite) it.
+
+---
+
+
+```r
+lapd &lt;- 
+  lapd %&gt;% 
+    mutate(employment_type = as.factor(employment_type),
+           job_class_title = as.factor(job_class_title),
+           base_pay_level = case_when(
+             base_pay &lt; 0 ~ "Less than 0", 
+             base_pay == 0 ~ "No Income",
+             base_pay &lt; 62474 &amp; base_pay &gt; 0 ~ "Less than Median, Greater than 0",
+             base_pay &gt; 62474 ~ "Greater than Median")) 
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "pygments",
+"highlightLines": true,
+"highlightLanguage": "r"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
