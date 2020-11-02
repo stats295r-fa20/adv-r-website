@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Iteration</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <link href="05d-iteration_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+    <script src="05d-iteration_files/anchor-sections-1.0.1/anchor-sections.js"></script>
+    <link rel="stylesheet" href="slide-style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide
+
+
+&lt;br&gt;
+&lt;br&gt;
+.pull-right[ 
+
+# Iteration
+## Dr. Mine Dogucu
+]
+
+
+
+
+
+---
+
+class: center middle
+
+### Movie Specific Information
+
+&lt;video width="80%" height="45%%" align = "center" controls&gt;
+  &lt;source src="screencast/5-scrape-movie.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+
+
+```r
+read_html("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt") %&gt;% 
+    html_nodes("time") %&gt;% 
+    html_text()
+```
+
+```
+## [1] "\n                        2h 28min\n                    "
+## [2] "148 min"
+```
+
+---
+
+
+```r
+time &lt;- read_html("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt") %&gt;% 
+    html_nodes("time") %&gt;% 
+    html_text()
+
+time[2]
+```
+
+```
+## [1] "148 min"
+```
+---
+
+
+```r
+time &lt;- read_html("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt") %&gt;% 
+    html_nodes("time") %&gt;% 
+    html_text()
+
+time[2] %&gt;% 
+    str_remove(" min") %&gt;% 
+    as.numeric()
+```
+
+```
+## [1] 148
+```
+
+---
+
+
+```r
+scrape_time &lt;- function(url) {
+  time &lt;- read_html(url) %&gt;% 
+    html_nodes("time") %&gt;% 
+    html_text()
+
+time[2] %&gt;% 
+    str_remove(" min") %&gt;% 
+    as.numeric()
+}
+```
+
+---
+
+
+```r
+scrape_time("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt")
+```
+
+```
+## [1] 148
+```
+
+
+---
+
+## Goal
+
+What if we wanted to use this function with [most popular 50 movies of 2010](https://www.imdb.com/search/title/?title_type=feature&amp;year=2010-01-01,2010-12-31)?
+
+
+&lt;img src="img/featured-popularity.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+Scraping First Movie
+
+
+```r
+scrape_time("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt")
+```
+
+```
+## [1] 148
+```
+
+Scraping Second Movie
+
+
+```r
+scrape_time("https://www.imdb.com/title/tt1591095/?ref_=adv_li_tt")
+```
+
+```
+## [1] 103
+```
+
+Scraping Third Movie...
+
+
+```r
+scrape_time("https://www.imdb.com/title/tt1285016/?ref_=adv_li_tt")
+```
+
+```
+## [1] 120
+```
+
+
+---
+
+.pull-left[
+In previous lecture
+
+
+```r
+scrape_movie_title &lt;- function(year) {
+  page &lt;- paste0("https://www.imdb.com/search/title/?title_type=feature&amp;year=", year, "-01-01,", year, "-12-31&amp;sort=user_rating,desc")
+read_html(page) %&gt;% 
+  html_nodes(".lister-item-header a") %&gt;% 
+  html_text()
+}
+```
+
+
+]
+
+
+.pull-right[
+In this lecture
+
+
+```r
+scrape_movie_urls &lt;- function(year) {
+  page &lt;- paste0("https://www.imdb.com/search/title/?title_type=feature&amp;year=", year, "-01-01,", year, "-12-31")
+read_html(page) %&gt;% 
+  html_nodes(".lister-item-header a") %&gt;% 
+  html_attr("href")
+}
+```
+
+]
+
+`html_attr()` allows us to scrape the attribute (in this case href) 
+
+---
+
+
+```r
+scrape_movie_urls(2010)
+```
+
+```
+##  [1] "/title/tt1375666/?ref_=adv_li_tt" "/title/tt1591095/?ref_=adv_li_tt"
+##  [3] "/title/tt1285016/?ref_=adv_li_tt" "/title/tt1179056/?ref_=adv_li_tt"
+##  [5] "/title/tt0446029/?ref_=adv_li_tt" "/title/tt1130884/?ref_=adv_li_tt"
+##  [7] "/title/tt1375670/?ref_=adv_li_tt" "/title/tt0926084/?ref_=adv_li_tt"
+##  [9] "/title/tt1250777/?ref_=adv_li_tt" "/title/tt0947798/?ref_=adv_li_tt"
+## [11] "/title/tt1458175/?ref_=adv_li_tt" "/title/tt1245526/?ref_=adv_li_tt"
+## [13] "/title/tt0840361/?ref_=adv_li_tt" "/title/tt1242432/?ref_=adv_li_tt"
+## [15] "/title/tt0758752/?ref_=adv_li_tt" "/title/tt1014759/?ref_=adv_li_tt"
+## [17] "/title/tt1588170/?ref_=adv_li_tt" "/title/tt1273235/?ref_=adv_li_tt"
+## [19] "/title/tt0398286/?ref_=adv_li_tt" "/title/tt1386588/?ref_=adv_li_tt"
+## [21] "/title/tt0814255/?ref_=adv_li_tt" "/title/tt1403865/?ref_=adv_li_tt"
+## [23] "/title/tt0938283/?ref_=adv_li_tt" "/title/tt1228705/?ref_=adv_li_tt"
+## [25] "/title/tt0800320/?ref_=adv_li_tt" "/title/tt1104001/?ref_=adv_li_tt"
+## [27] "/title/tt1255953/?ref_=adv_li_tt" "/title/tt1314655/?ref_=adv_li_tt"
+## [29] "/title/tt1325004/?ref_=adv_li_tt" "/title/tt1282140/?ref_=adv_li_tt"
+## [31] "/title/tt0980970/?ref_=adv_li_tt" "/title/tt0892769/?ref_=adv_li_tt"
+## [33] "/title/tt0964517/?ref_=adv_li_tt" "/title/tt1504320/?ref_=adv_li_tt"
+## [35] "/title/tt1231587/?ref_=adv_li_tt" "/title/tt0944835/?ref_=adv_li_tt"
+## [37] "/title/tt1126591/?ref_=adv_li_tt" "/title/tt1001526/?ref_=adv_li_tt"
+## [39] "/title/tt1323594/?ref_=adv_li_tt" "/title/tt0455407/?ref_=adv_li_tt"
+## [41] "/title/tt1120985/?ref_=adv_li_tt" "/title/tt0435761/?ref_=adv_li_tt"
+## [43] "/title/tt1263750/?ref_=adv_li_tt" "/title/tt1020558/?ref_=adv_li_tt"
+## [45] "/title/tt1228987/?ref_=adv_li_tt" "/title/tt1403981/?ref_=adv_li_tt"
+## [47] "/title/tt1465522/?ref_=adv_li_tt" "/title/tt0955308/?ref_=adv_li_tt"
+## [49] "/title/tt0429493/?ref_=adv_li_tt" "/title/tt1155076/?ref_=adv_li_tt"
+```
+
+---
+
+
+```r
+movie_urls &lt;- scrape_movie_urls(2010)
+```
+
+---
+
+We want to use `scrape_time()` function with each movie id in `movie_urls`. 
+
+
+```r
+scrape_time &lt;- function(movie_url) {
+  time &lt;- paste0("https://www.imdb.com", movie_url) %&gt;% 
+    read_html() %&gt;% 
+    html_nodes("time") %&gt;% 
+    html_text()
+
+time[2] %&gt;% 
+    str_remove(" min") %&gt;% 
+    as.numeric()
+
+
+}
+```
+
+---
+
+## Mapping (A simple example)
+
+
+
+```r
+double &lt;- function(number) {
+  number*2
+}
+```
+
+
+--
+
+
+
+```r
+double(2)
+```
+
+```
+## [1] 4
+```
+
+```r
+double(4)
+```
+
+```
+## [1] 8
+```
+
+```r
+double(6)
+```
+
+```
+## [1] 12
+```
+
+---
+
+
+```r
+even &lt;- seq(from = 2, to = 10, by =2)
+
+even
+```
+
+```
+## [1]  2  4  6  8 10
+```
+
+
+---
+
+## Mapping (A simple example)
+
+Mapping allows us to apply a function to each element of a vector (or a list) and have a vector (or a list, or a data frame) as an output.
+
+
+```r
+map_dbl(even, double)
+```
+
+```
+## [1]  4  8 12 16 20
+```
+
+---
+
+**English**: Take each element of the `movie_urls` vector and use it in (map it to) the `scrape_time()` function. 
+
+
+```r
+map_dbl(movie_urls, scrape_time)
+```
+
+```
+##  [1] 148 103 120  95 112 138 102 146 117 108 133 111 125 108 112 108 144 104 100
+## [20] 107 118 110 103 124 106 125 131  80 124  92 113  98 116 118 101 100 119  95
+## [39]  95 101 112 103 107  97 116 113  89 140 117 140
+```
+
+---
+
+## Map functions
+
+| Function    | Output             |
+|-------------|--------------------|
+| `map()`     | a list             |
+| `map_lgl()` | a logical vector   |
+| `map_int()` | an integer vector  |
+| `map_dbl()` | a double vector    |
+| `map_chr()` | a character vector |
+| `map_df()`  | a data frame       |
+
+---
+
+
+
+```r
+scrape_movie &lt;- function(movie_url) {
+  time &lt;- paste0("https://www.imdb.com", movie_url) %&gt;%
+    read_html() %&gt;% 
+    html_nodes("time") %&gt;% 
+    html_text()
+  
+  time_min &lt;- time[2] %&gt;% 
+    str_remove(" min") %&gt;% 
+    as.numeric()
+  
+  rating &lt;- paste0("https://www.imdb.com", movie_url) %&gt;%
+    read_html() %&gt;% 
+    html_nodes("strong span") %&gt;% 
+    html_text()
+  
+  tibble(time = time_min,
+         rating = rating)
+}
+```
+
+---
+
+
+```r
+map_df(movie_urls, scrape_movie)
+```
+
+```
+## # A tibble: 50 x 2
+##     time rating
+##    &lt;dbl&gt; &lt;chr&gt; 
+##  1   148 8.8   
+##  2   103 6.8   
+##  3   120 7.7   
+##  4    95 5.2   
+##  5   112 7.5   
+##  6   138 8.2   
+##  7   102 5.9   
+##  8   146 7.7   
+##  9   117 7.6   
+## 10   108 8.0   
+## # … with 40 more rows
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "pygments",
+"highlightLines": true,
+"highlightLanguage": "r"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

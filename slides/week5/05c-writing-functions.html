@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Writing Functions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <link href="05c-writing-functions_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+    <script src="05c-writing-functions_files/anchor-sections-1.0.1/anchor-sections.js"></script>
+    <link rel="stylesheet" href="slide-style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide
+
+
+&lt;br&gt;
+&lt;br&gt;
+.pull-right[ 
+
+# Writing Functions
+## Dr. Mine Dogucu
+]
+
+---
+
+## Definining functions
+
+
+```r
+double &lt;- function(number) {
+  number*2
+}
+```
+
+--
+
+The name of the function is `double()` and it takes one argument `number`.
+
+---
+
+
+```r
+double(number = 3)
+```
+
+```
+## [1] 6
+```
+
+--
+
+
+```r
+double(3)
+```
+
+```
+## [1] 6
+```
+
+
+---
+
+## Setting a default argument
+
+
+```r
+double &lt;- function(number = 5) {
+  number*2
+}
+```
+
+
+---
+
+
+```r
+double()
+```
+
+```
+## [1] 10
+```
+
+---
+
+## Having multiple arguments
+
+
+```r
+multiply &lt;- function(number, by) {
+  number*by
+}
+```
+
+--
+
+
+```r
+multiply(number = 10, by = 3)
+```
+
+```
+## [1] 30
+```
+
+
+---
+
+## Goal
+
+Can we get the top 50 highest ranked feature movies for any year?
+
+
+---
+
+[Featured Movies](https://www.imdb.com/search/title/?title_type=feature&amp;year=2010-01-01,2010-12-31&amp;sort=user_rating,desc)
+
+&lt;img src="img/featured.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Scraping the 2010 movie titles
+
+
+```r
+library(tidyverse)
+library(rvest)
+page &lt;- "https://www.imdb.com/search/title/?title_type=feature&amp;year=2010-01-01,2010-12-31&amp;sort=user_rating,desc"
+read_html(page) %&gt;% 
+  html_nodes(".lister-item-header a") %&gt;% 
+  html_text()
+```
+
+```
+##  [1] "Hopeful Notes"                                                              
+##  [2] "Lebensraum/Living Space"                                                    
+##  [3] "Revolver: Poor Boyz"                                                        
+##  [4] "Shakti Pirakkudhu"                                                          
+##  [5] "Tebaatusasula"                                                              
+##  [6] "Townbiz"                                                                    
+##  [7] "Irdatlan Iroda"                                                             
+##  [8] "Die Haushaltshilfe"                                                         
+##  [9] "Dhinveynugehithaamaigaa"                                                    
+## [10] "Min pinlige familie og mutantdræbersneglene"                                
+## [11] "Dazed in Doon"                                                              
+## [12] "DranDeh"                                                                    
+## [13] "Truth &amp; Life Dramatized Audio Bible"                                        
+## [14] "Staying Gold"                                                               
+## [15] "The Final Journey"                                                          
+## [16] "It's Always Sunny in Philadelphia: Cast &amp; Creators Live at the Paley Center"
+## [17] "The Clock"                                                                  
+## [18] "The Ballad of Frankie Silver"                                               
+## [19] "Parastasul lui Viorel nu se mai tine aici"                                  
+## [20] "Les Misérables in Concert: The 25th Anniversary"                            
+## [21] "A3D Ayumi Hamasaki Arena Tour 2009 A: Next Level"                           
+## [22] "Kisses, Chloe"                                                              
+## [23] "Barriere"                                                                   
+## [24] "Unbelehrbar"                                                                
+## [25] "New Kids on the Block: Coming Home"                                         
+## [26] "In Focus"                                                                   
+## [27] "Inception"                                                                  
+## [28] "Nobody Smiling"                                                             
+## [29] "Heroes Crossing"                                                            
+## [30] "Salvage Dream"                                                              
+## [31] "The Beekeepers"                                                             
+## [32] "The Art of Women"                                                           
+## [33] "The Corners"                                                                
+## [34] "The Toll"                                                                   
+## [35] "Rat Rod Rockers!"                                                           
+## [36] "Urban Wolf"                                                                 
+## [37] "Grand Slammed"                                                              
+## [38] "Jen"                                                                        
+## [39] "Love Equation"                                                              
+## [40] "Supériorité"                                                                
+## [41] "Den relativt store DVD'en om Radioresepsjonen"                              
+## [42] "The New Normal"                                                             
+## [43] "Freedom Hills"                                                              
+## [44] "Vecinos"                                                                    
+## [45] "Sesame Street: C is for Cookie Monster"                                     
+## [46] "Green Day: 21st Century Breakdown"                                          
+## [47] "Life of the Party: Vol. II"                                                 
+## [48] "National Theatre Live: Nation"                                              
+## [49] "The Wizard of Agni"                                                         
+## [50] "Slednecks 13"
+```
+
+
+---
+
+## Scraping the 2011 movie titles
+
+
+```r
+page &lt;- "https://www.imdb.com/search/title/?title_type=feature&amp;year=2011-01-01,2011-12-31&amp;sort=user_rating,desc"
+read_html(page) %&gt;% 
+  html_nodes(".lister-item-header a") %&gt;% 
+  html_text()
+```
+
+```
+##  [1] "Deswa"                                                                   
+##  [2] "Love on a Leash"                                                         
+##  [3] "Rescue Team"                                                             
+##  [4] "The Script: Homecoming"                                                  
+##  [5] "Sans pudeur ni morale"                                                   
+##  [6] "Tubero"                                                                  
+##  [7] "Kill Bill: The Whole Bloody Affair"                                      
+##  [8] "Watchtower"                                                              
+##  [9] "Virtual Trek Wildlife Park"                                              
+## [10] "The Nutcracker and the Mouse King"                                       
+## [11] "Flashback"                                                               
+## [12] "Myth &amp; Mystery"                                                          
+## [13] "American Actor"                                                          
+## [14] "The Phantom of the Opera at the Royal Albert Hall"                       
+## [15] "Stalemate"                                                               
+## [16] "Mr. Plinkett's Indiana Jones and the Kingdom of the Crystal Skull Review"
+## [17] "S.a.l.i.m &amp; Co.'s Café"                                                  
+## [18] "Gokuraku sentô: Kyonyû yumomi"                                           
+## [19] "Big Weekend"                                                             
+## [20] "Howling at the Moon"                                                     
+## [21] "The Racket Boys"                                                         
+## [22] "The Soft Touch"                                                          
+## [23] "Men's Egg Drummers"                                                      
+## [24] "Frankenstein"                                                            
+## [25] "She's Out of His Mind"                                                   
+## [26] "Stan"                                                                    
+## [27] "Röhrls Katze"                                                            
+## [28] "Much Ado About Nothing"                                                  
+## [29] "40-Life"                                                                 
+## [30] "Blood Eclipse"                                                           
+## [31] "So Much Pain So in Love"                                                 
+## [32] "Payin' the Price"                                                        
+## [33] "Nine Lives: A Musical Adaptation Live"                                   
+## [34] "Tangled Up in Blue"                                                      
+## [35] "South of Southern"                                                       
+## [36] "Taken in"                                                                
+## [37] "Dark Blue"                                                               
+## [38] "The Empty Hands"                                                         
+## [39] "Translucent"                                                             
+## [40] "Seksing Masahista"                                                       
+## [41] "A-ha: Ending on a High Note - The Final Concert"                         
+## [42] "Taza"                                                                    
+## [43] "A Perfect Life"                                                          
+## [44] "Half Empty"                                                              
+## [45] "Bella Biondina"                                                          
+## [46] "Where's My Stuff?"                                                       
+## [47] "Bubbles"                                                                 
+## [48] "Faust Sonnengesang"                                                      
+## [49] "Billy Joel: Live at Shea Stadium"                                        
+## [50] "The Hunting"
+```
+
+All we are changing is the date in the URL.
+
+---
+
+We cannot just keep copying and pasting our code for each year. It gets tiring!!! 
+
+--
+
+Whenever you catch yourself copying and pasting code and only modifying a tiny part (e.g. year in the URL), write a function to automate the process. The tiny part that needs the modification can be the argument of the function.
+
+---
+
+class: center middle
+
+&lt;img src="img/url.001.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: center middle
+
+&lt;img src="img/url.002.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: center middle
+
+&lt;img src="img/url.003.jpeg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+scrape_movie_title &lt;- function(year) {
+  page &lt;- paste0("https://www.imdb.com/search/title/?title_type=feature&amp;year=", year, "-01-01,", year, "-12-31&amp;sort=user_rating,desc")
+read_html(page) %&gt;% 
+  html_nodes(".lister-item-header a") %&gt;% 
+  html_text()
+}
+```
+
+
+---
+
+
+```r
+scrape_movie_title(2002)
+```
+
+```
+##  [1] "A Mero Hajur"                                        
+##  [2] "Welcome to San Pedro"                                
+##  [3] "Americanos"                                          
+##  [4] "Someone Is Sleeping in My Pain: An East-West Macbeth"
+##  [5] "Papsajt"                                             
+##  [6] "Check Mate"                                          
+##  [7] "Bakshis"                                             
+##  [8] "JJ Cale in Session"                                  
+##  [9] "Destiny 101"                                         
+## [10] "Engaging Peter"                                      
+## [11] "Regarding Penelope's Wake"                           
+## [12] "Montagna con Forza"                                  
+## [13] "Book of Danny"                                       
+## [14] "2 Fläschchen"                                        
+## [15] "Maya Namara"                                         
+## [16] "Until Morning"                                       
+## [17] "Punarjani"                                           
+## [18] "Only in Hollywood"                                   
+## [19] "La gran sorpresa"                                    
+## [20] "Blackmailing Santa"                                  
+## [21] "The Lord of the Rings: The Two Towers"               
+## [22] "My Father's Daughter"                                
+## [23] "Peggy and Fred in Hell: The Complete Cycle"          
+## [24] "West Bank Brooklyn"                                  
+## [25] "The Cloud of Unknowing"                              
+## [26] "My Brother's Light"                                  
+## [27] "Matir moina"                                         
+## [28] "City of God"                                         
+## [29] "Manmandir"                                           
+## [30] "Khandan"                                             
+## [31] "Simhadriya Simha"                                    
+## [32] "Mutual Admiration Society"                           
+## [33] "Filantropica"                                        
+## [34] "Sexgunsmoney@20"                                     
+## [35] "The Pianist"                                         
+## [36] "Nomad"                                               
+## [37] "Babylonia en Guagua"                                 
+## [38] "Enki-Benki"                                          
+## [39] "Three"                                               
+## [40] "Dogs Bark"                                           
+## [41] "A Peck on the Cheek"                                 
+## [42] "Urban Playground"                                    
+## [43] "Motherly Love"                                       
+## [44] "Mrtav 'ladan"                                        
+## [45] "Wheatfield with Crows"                               
+## [46] "Como perros de la calle"                             
+## [47] "A Clean, Well-Lighted Place"                         
+## [48] "Manmadhudu"                                          
+## [49] "The Grail"                                           
+## [50] "The Snowflake Crusade"
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "pygments",
+"highlightLines": true,
+"highlightLanguage": "r"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

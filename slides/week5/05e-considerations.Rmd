@@ -1,0 +1,68 @@
+---
+title: "Considerations about Web Data"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: middle
+
+```{r echo = FALSE, fig.align='center', out.width="95%"}
+knitr::include_graphics("img/considerations.jpeg")
+```
+
+
+---
+
+## Do you need all that data at that speed?
+
+**Sampling** rather than scraping all of the data may be an option.
+
+--
+
+You may end up with `HTTP Error 429 (Too many requests)`. In this case you may want to slow down your requests per a given time interval. 
+
+```{r}
+scrape_movie <- function(movie_url) {
+  Sys.sleep(runif(1))
+  #### Remaining code of the function  
+}
+```
+
+Before scraping each movie's page this would make system to sleep for a random number of seconds between 0 and 1 second. 
+
+---
+
+## Write your data (if possible)
+
+- Data online are not static.
+
+- Web pages change structures.
+
+- Only way of reproducing the same results may be from the `csv` files that you write.
+
+---
+
+## Optional
+
+Make use of `beepr::beep()`, this way when your code finishes running, you will be notified.

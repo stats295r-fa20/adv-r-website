@@ -1,0 +1,241 @@
+---
+title: "Web Scraping"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: center middle
+
+[SelectorGadget](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=en)
+
+<hr>
+
+[IMDB 250 Top Rated Movies](https://www.imdb.com/chart/top)
+
+---
+
+class:middle
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/web-scrape.png")
+```
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/imdb-top250.png")
+```
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/imdb-csv.png")
+```
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/browser.png")
+```
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/imdb-getsource.png")
+```
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/imdb-source.png")
+```
+
+
+---
+
+class: center middle
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-selector-gadget.mp4" type="video/mp4">
+</video>
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="80%"}
+knitr::include_graphics("img/imdb-source.png")
+```
+
+---
+
+```{r echo = FALSE, fig.align='center',out.width="20%"}
+knitr::include_graphics("img/rvest-logo.png")
+```
+
+`read_html()` - reads an html page.  
+`html_nodes()`  - extracts the html nodes.  
+`html_text()` - extracts the text of the node.  
+`html_attr()` - extracts the attribute
+---
+
+## Load packages 
+
+```{r message = FALSE}
+library(rvest)          
+library(tidyverse)      
+```
+
+---
+
+### Check if a bot has permisson to access page
+
+```{r}
+robotstxt::paths_allowed("http://www.imdb.com")
+robotstxt::paths_allowed("http://www.facebook.com")
+```
+
+---
+
+# Read the entire page
+
+```{r}
+page <- read_html("http://www.imdb.com/chart/top")
+
+page
+```
+
+---
+class: inverse middle
+
+.font50[Scrape titles]
+---
+
+```{r}
+page %>%
+  html_nodes(".titleColumn a")
+```
+
+---
+
+```{r}
+page %>%
+  html_nodes(".titleColumn a") %>% 
+  html_text()
+```
+
+---
+
+```{r}
+
+titles <- page %>%
+  html_nodes(".titleColumn a") %>% 
+  html_text()
+```
+
+---
+
+```{r}
+str(titles)
+```
+
+---
+
+class: inverse middle
+
+.font50[Scrape years]
+
+---
+
+```{r}
+page %>% 
+  html_nodes(".secondaryInfo") %>% 
+  html_text()
+```
+
+---
+
+```{r}
+page %>% 
+  html_nodes(".secondaryInfo") %>% 
+  html_text() %>% 
+  str_remove("\\(") %>%                
+  str_remove("\\)") %>%               
+  as.numeric()
+```
+
+
+---
+
+```{r}
+years <- 
+  page %>% 
+  html_nodes(".secondaryInfo") %>% 
+  html_text() %>% 
+  str_remove("\\(") %>%                
+  str_remove("\\)") %>%               
+  as.numeric()
+```
+
+
+---
+
+class: middle inverse
+
+.font50[Scrape ratings]
+
+---
+
+```{r}
+ratings <- page %>%
+  html_nodes("strong") %>%
+  html_text() %>%
+  as.numeric()
+```
+
+---
+
+```{r}
+imdb_top_250 <- tibble(
+  title = titles, 
+  year = years, 
+  rating = ratings
+)
+```
+
+---
+
+
+```{r}
+imdb_top_250 %>%
+  group_by(year) %>%
+  summarize(avg_rating = mean(rating)) %>% 
+  arrange(desc(avg_rating))
+```
+
+---
+
+```{r}
+imdb_top_250 %>% 
+  filter(year == 1972)
+```
+

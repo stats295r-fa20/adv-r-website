@@ -1,0 +1,281 @@
+---
+title: "Iteration"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+
+```{r message = FALSE, echo=FALSE}
+library(tidyverse)
+library(rvest)
+```
+
+
+---
+
+class: center middle
+
+### Movie Specific Information
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-scrape-movie.mp4" type="video/mp4">
+</video>
+
+---
+
+```{r}
+read_html("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt") %>% 
+    html_nodes("time") %>% 
+    html_text()
+```
+
+---
+
+```{r}
+time <- read_html("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt") %>% 
+    html_nodes("time") %>% 
+    html_text()
+
+time[2]
+```
+---
+
+```{r}
+time <- read_html("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt") %>% 
+    html_nodes("time") %>% 
+    html_text()
+
+time[2] %>% 
+    str_remove(" min") %>% 
+    as.numeric()
+
+
+```
+
+---
+
+```{r}
+scrape_time <- function(url) {
+  time <- read_html(url) %>% 
+    html_nodes("time") %>% 
+    html_text()
+
+time[2] %>% 
+    str_remove(" min") %>% 
+    as.numeric()
+}
+```
+
+---
+
+```{r}
+scrape_time("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt")
+```
+
+
+---
+
+## Goal
+
+What if we wanted to use this function with [most popular 50 movies of 2010](https://www.imdb.com/search/title/?title_type=feature&year=2010-01-01,2010-12-31)?
+
+
+```{r fig.align='center', echo = FALSE, out.width="80%"}
+knitr::include_graphics("img/featured-popularity.png")
+```
+
+---
+
+Scraping First Movie
+
+```{r}
+scrape_time("https://www.imdb.com/title/tt1375666/?ref_=adv_li_tt")
+```
+
+Scraping Second Movie
+
+```{r}
+scrape_time("https://www.imdb.com/title/tt1591095/?ref_=adv_li_tt")
+```
+
+Scraping Third Movie...
+
+```{r}
+scrape_time("https://www.imdb.com/title/tt1285016/?ref_=adv_li_tt")
+```
+
+
+---
+
+.pull-left[
+In previous lecture
+
+```{r}
+scrape_movie_title <- function(year) {
+  page <- paste0("https://www.imdb.com/search/title/?title_type=feature&year=", year, "-01-01,", year, "-12-31&sort=user_rating,desc")
+read_html(page) %>% 
+  html_nodes(".lister-item-header a") %>% 
+  html_text()
+}
+```
+
+
+]
+
+
+.pull-right[
+In this lecture
+
+```{r}
+scrape_movie_urls <- function(year) {
+  page <- paste0("https://www.imdb.com/search/title/?title_type=feature&year=", year, "-01-01,", year, "-12-31")
+read_html(page) %>% 
+  html_nodes(".lister-item-header a") %>% 
+  html_attr("href")
+}
+```
+
+]
+
+`html_attr()` allows us to scrape the attribute (in this case href) 
+
+---
+
+```{r cache = TRUE}
+scrape_movie_urls(2010)
+```
+
+---
+
+```{r}
+movie_urls <- scrape_movie_urls(2010)
+```
+
+---
+
+We want to use `scrape_time()` function with each movie id in `movie_urls`. 
+
+```{r}
+scrape_time <- function(movie_url) {
+  time <- paste0("https://www.imdb.com", movie_url) %>% 
+    read_html() %>% 
+    html_nodes("time") %>% 
+    html_text()
+
+time[2] %>% 
+    str_remove(" min") %>% 
+    as.numeric()
+
+
+}
+```
+
+---
+
+## Mapping (A simple example)
+
+
+```{r}
+double <- function(number) {
+  number*2
+}
+```
+
+
+--
+
+
+```{r}
+double(2)
+double(4)
+double(6)
+```
+
+---
+
+```{r}
+even <- seq(from = 2, to = 10, by =2)
+
+even
+```
+
+
+---
+
+## Mapping (A simple example)
+
+Mapping allows us to apply a function to each element of a vector (or a list) and have a vector (or a list, or a data frame) as an output.
+
+```{r}
+map_dbl(even, double)
+```
+
+---
+
+**English**: Take each element of the `movie_urls` vector and use it in (map it to) the `scrape_time()` function. 
+
+```{r cache = TRUE}
+map_dbl(movie_urls, scrape_time)
+```
+
+---
+
+## Map functions
+
+| Function    | Output             |
+|-------------|--------------------|
+| `map()`     | a list             |
+| `map_lgl()` | a logical vector   |
+| `map_int()` | an integer vector  |
+| `map_dbl()` | a double vector    |
+| `map_chr()` | a character vector |
+| `map_df()`  | a data frame       |
+
+---
+
+
+```{r}
+scrape_movie <- function(movie_url) {
+  time <- paste0("https://www.imdb.com", movie_url) %>%
+    read_html() %>% 
+    html_nodes("time") %>% 
+    html_text()
+  
+  time_min <- time[2] %>% 
+    str_remove(" min") %>% 
+    as.numeric()
+  
+  rating <- paste0("https://www.imdb.com", movie_url) %>%
+    read_html() %>% 
+    html_nodes("strong span") %>% 
+    html_text()
+  
+  tibble(time = time_min,
+         rating = rating)
+}
+```
+
+---
+
+```{r cache = TRUE}
+map_df(movie_urls, scrape_movie)
+```

@@ -1,0 +1,181 @@
+---
+title: "Writing Functions"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+## Definining functions
+
+```{r}
+double <- function(number) {
+  number*2
+}
+```
+
+--
+
+The name of the function is `double()` and it takes one argument `number`.
+
+---
+
+```{r}
+double(number = 3)
+```
+
+--
+
+```{r}
+double(3)
+```
+
+
+---
+
+## Setting a default argument
+
+```{r}
+double <- function(number = 5) {
+  number*2
+}
+```
+
+
+---
+
+```{r}
+double()
+```
+
+---
+
+## Having multiple arguments
+
+```{r}
+multiply <- function(number, by) {
+  number*by
+}
+```
+
+--
+
+```{r}
+multiply(number = 10, by = 3)
+```
+
+
+---
+
+## Goal
+
+Can we get the top 50 highest ranked feature movies for any year?
+
+
+---
+
+[Featured Movies](https://www.imdb.com/search/title/?title_type=feature&year=2010-01-01,2010-12-31&sort=user_rating,desc)
+
+```{r echo = FALSE, fig.align='center', out.width="50%"}
+knitr::include_graphics("img/featured.png")
+```
+
+---
+
+## Scraping the 2010 movie titles
+
+```{r message = FALSE}
+library(tidyverse)
+library(rvest)
+page <- "https://www.imdb.com/search/title/?title_type=feature&year=2010-01-01,2010-12-31&sort=user_rating,desc"
+read_html(page) %>% 
+  html_nodes(".lister-item-header a") %>% 
+  html_text()
+```
+
+
+---
+
+## Scraping the 2011 movie titles
+
+```{r}
+page <- "https://www.imdb.com/search/title/?title_type=feature&year=2011-01-01,2011-12-31&sort=user_rating,desc"
+read_html(page) %>% 
+  html_nodes(".lister-item-header a") %>% 
+  html_text()
+```
+
+All we are changing is the date in the URL.
+
+---
+
+We cannot just keep copying and pasting our code for each year. It gets tiring!!! 
+
+--
+
+Whenever you catch yourself copying and pasting code and only modifying a tiny part (e.g. year in the URL), write a function to automate the process. The tiny part that needs the modification can be the argument of the function.
+
+---
+
+class: center middle
+
+```{r echo = FALSE, fig.align='center', out.width="80%"}
+knitr::include_graphics("img/url.001.jpeg")
+```
+
+---
+
+class: center middle
+
+```{r echo = FALSE, fig.align='center', out.width="80%"}
+knitr::include_graphics("img/url.002.jpeg")
+```
+
+---
+
+class: center middle
+
+```{r echo = FALSE, fig.align='center', out.width="80%"}
+knitr::include_graphics("img/url.003.jpeg")
+```
+
+---
+
+```{r}
+
+scrape_movie_title <- function(year) {
+  page <- paste0("https://www.imdb.com/search/title/?title_type=feature&year=", year, "-01-01,", year, "-12-31&sort=user_rating,desc")
+read_html(page) %>% 
+  html_nodes(".lister-item-header a") %>% 
+  html_text()
+}
+
+```
+
+
+---
+
+```{r}
+scrape_movie_title(2002)
+```
+
+
