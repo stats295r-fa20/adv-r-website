@@ -1,0 +1,253 @@
+---
+title: "Working with Strings"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: middle center
+
+[Friends](https://www.imdb.com/title/tt0108778)
+
+---
+
+```{r echo = FALSE, message=FALSE}
+library(tidyverse)
+friends <- read_csv(here::here("slides/data/friends.csv"))
+```
+
+```{r}
+glimpse(friends)
+```
+
+---
+
+```{r}
+friends$description
+```
+
+---
+
+```{r}
+friends$description[1]
+```
+
+--
+
+```{r}
+first_episode_desc <- friends$description[1]
+```
+
+
+---
+
+```{r echo = FALSE, fig.align='center', out.width="40%"}
+
+knitr::include_graphics("img/stringr-logo.png")
+```
+
+---
+
+class: middle 
+
+```{r eval=FALSE}
+str_something(some_character_vector, ....)
+```
+
+
+---
+
+class: inverse middle
+
+.font75[str_length()]
+
+---
+
+```{r}
+str_length(first_episode_desc)
+```
+
+`str_length()` returns the length of string.
+
+---
+
+Which episode has the longest description?
+
+```{r}
+str_length(friends$description)
+```
+
+---
+
+Which episode has the longest description?
+
+```{r}
+max(str_length(friends$description))
+```
+---
+
+Which episode has the longest description?
+
+```{r}
+friends %>% 
+  filter(str_length(description) == max(str_length(description)))
+```
+
+
+---
+
+Which episode has the longest description?
+
+```{r}
+friends %>% 
+  filter(str_length(description) == max(str_length(description))) %>% 
+  select(description) %>% 
+  pull() %>% 
+  str_length()
+```
+
+---
+
+class: inverse middle
+
+.font75[str_sub()]
+
+---
+
+```{r}
+first_episode_desc
+```
+
+--
+
+```{r}
+# 2nd to 8th character
+str_sub(first_episode_desc, 2, 8)
+```
+
+--
+
+```{r}
+# 4th to fifth-to-last character 
+str_sub(first_episode_desc, 4, -5)
+```
+
+---
+
+class: middle inverse
+
+.font75[str_to_lower()]  
+.font75[str_to_upper()]
+
+---
+
+```{r}
+str_to_lower(first_episode_desc)
+```
+
+--
+
+```{r}
+str_to_upper(first_episode_desc)
+```
+
+
+---
+
+Change all the titles to capital letters.
+
+```{r}
+friends %>% 
+  mutate(title = str_to_upper(title))
+```
+
+---
+class: middle inverse
+
+.font75[str_detect()]  
+
+
+---
+
+```{r}
+str_detect(first_episode_desc, "Rachel")
+```
+
+--
+
+```{r}
+str_detect(first_episode_desc, "Ross")
+```
+
+
+---
+
+How many episodes have "Phoebe" in the description?
+
+```{r}
+str_detect(friends$description, "Phoebe") 
+```
+
+---
+
+```{r}
+str_detect(friends$description, "Phoebe") %>% 
+  sum()
+```
+
+---
+
+class: inverse middle
+
+.font75[str_split()]
+
+---
+
+```{r}
+str_split(first_episode_desc, boundary("word"))
+```
+
+---
+
+```{r}
+str_split(first_episode_desc, boundary("character"))
+```
+
+---
+
+class: inverse middle
+
+.font75[str_replace()]
+
+---
+
+```{r}
+str_replace(first_episode_desc, "Monica", "Monika")
+```
+
+
+---
+
+class: center middle
+
+[stringr cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf)

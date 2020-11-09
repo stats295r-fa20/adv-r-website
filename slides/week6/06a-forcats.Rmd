@@ -1,0 +1,205 @@
+---
+title: "Working with Factors"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: middle
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+
+```{r echo = FALSE, fig.align='center', out.width="30%"}
+knitr::include_graphics("img/forcats-logo.png")
+```
+
+
+Functions have the form `fct_something()`
+
+--
+
+Most of the examples in this lecture is from the `forcats` packages documentation.
+
+---
+
+```{r}
+glimpse(gss_cat)
+```
+
+
+---
+
+class:: inverse middle
+
+.font75[Collapsing factors]
+
+---
+
+```{r}
+str(gss_cat$partyid)
+```
+
+---
+
+```{r}
+count(gss_cat, partyid)
+```
+
+---
+
+```{r}
+partyid2 <- fct_collapse(gss_cat$partyid,
+                         missing = c("No answer", "Don't know"),
+                         other = "Other party",
+                         rep = c("Strong republican", "Not str republican"),
+                         ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+                         dem = c("Not str democrat", "Strong democrat")
+)
+```
+
+
+---
+
+```{r}
+partyid2
+```
+
+---
+
+```{r}
+gss_cat %>% 
+  mutate(partyid2 = fct_collapse(partyid,
+                                 missing = c("No answer", "Don't know"),
+                                 other = "Other party",
+                                 rep = c("Strong republican", "Not str republican"),
+                                 ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+                                 dem = c("Not str democrat", "Strong democrat"))
+)
+```
+
+
+---
+
+class: middle inverse
+
+.font75[Dropping levels]
+
+---
+
+```{r}
+year <- factor(c("sophomore", "sophomore", "first-year", "sophomore"), 
+            levels = c("first-year", "sophomore", "junior", "senior"))
+year
+
+```
+
+--
+
+```{r}
+fct_drop(year)
+```
+
+--
+
+```{r}
+fct_drop(year, only = "senior")
+```
+
+---
+
+class: middle inverse
+
+.font75[Matching]
+
+---
+
+```{r}
+fct_match(gss_cat$marital, "Married")
+```
+
+---
+
+```{r}
+fct_match(gss_cat$marital, c("Married", "Divorced"))
+```
+
+---
+
+We can use these functions along with other data wrangling functions.
+
+```{r}
+gss_cat %>% 
+  mutate(married_divorced = fct_match(marital, c("Married", "Divorced")))
+```
+
+
+---
+
+class: inverse middle
+
+.font75[Recoding levels]
+
+---
+
+```{r}
+places <- factor(c("Irvine", 
+                   "Los Angeles", 
+                   "Albany", 
+                   "New York City"))
+places
+
+```
+
+---
+
+```{r}
+fct_recode(places, 
+           California = "Irvine", 
+           California = "Los Angeles") 
+```
+
+
+---
+
+```{r}
+fct_recode(places, 
+           California = "Irvine", 
+           California = "Los Angeles")
+```
+
+---
+
+```{r warning = TRUE, error=TRUE}
+fct_recode(places, 
+           California = "Irvinnne", 
+           California = "Los Angeles")
+```
+
+---
+
+class: center middle
+
+[forcats cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/factors.pdf)

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Working with Dates</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Dr. Mine Dogucu" />
+    <link href="06b-lubridate_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+    <script src="06b-lubridate_files/anchor-sections-1.0.1/anchor-sections.js"></script>
+    <link rel="stylesheet" href="slide-style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: title-slide
+
+
+&lt;br&gt;
+&lt;br&gt;
+.pull-right[ 
+
+# Working with Dates
+## Dr. Mine Dogucu
+]
+
+---
+
+class: middle
+
+
+
+
+&lt;img src="img/lubridate-logo.jpg" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+
+```r
+library(lubridate)
+```
+
+---
+
+class: middle
+
+&lt;img src="https://imgs.xkcd.com/comics/iso_8601.png" height="95%" style="display: block; margin: auto;" /&gt;
+
+.footnote[https://xkcd.com/1179/]
+
+
+---
+
+
+```r
+today()
+```
+
+```
+## [1] "2020-11-08"
+```
+
+```r
+now()
+```
+
+```
+## [1] "2020-11-08 19:46:52 PST"
+```
+
+---
+class: inverse middle
+
+.font75[From strings to dates]
+
+---
+
+#### `mdy()`
+
+
+```r
+arrival &lt;- c("November 1st, 2005", "February 2nd 2007")
+```
+
+--
+
+
+```r
+str(arrival)
+```
+
+```
+##  chr [1:2] "November 1st, 2005" "February 2nd 2007"
+```
+
+--
+
+
+```r
+mdy(arrival)
+```
+
+```
+## [1] "2005-11-01" "2007-02-02"
+```
+
+--
+
+
+```r
+str(mdy(arrival))
+```
+
+```
+##  Date[1:2], format: "2005-11-01" "2007-02-02"
+```
+
+---
+
+
+```r
+mdy("11012005")
+```
+
+```
+## [1] "2005-11-01"
+```
+
+--
+
+
+```r
+mdy("Nov-01-2005")
+```
+
+```
+## [1] "2005-11-01"
+```
+
+---
+
+class: middle
+
+`mdy()`
+
+--
+
+`ymd()`
+
+--
+
+`dmy()`
+
+
+---
+
+We can include hours, minutes and seconds too.
+
+
+```r
+mdy_hms("11/01/2005 22:05:18")
+```
+
+```
+## [1] "2005-11-01 22:05:18 UTC"
+```
+
+--
+
+
+
+```r
+mdy_hms("11/01/2005 22:05:18") %&gt;% 
+  str()
+```
+
+```
+##  POSIXct[1:1], format: "2005-11-01 22:05:18"
+```
+
+
+---
+
+## Types
+
+`date`
+
+--
+
+`time`
+
+--
+
+`date-time`
+
+--
+
+`POSIXct`
+
+--
+
+`POSIXlt`
+
+---
+
+## Including time zones
+
+
+```r
+mdy_hms("11/01/2005 22:05:18", 
+        tz = "America/Los_Angeles")
+```
+
+```
+## [1] "2005-11-01 22:05:18 PST"
+```
+
+---
+
+## All time zones
+
+
+```r
+OlsonNames()
+```
+
+```
+##   [1] "Africa/Abidjan"                   "Africa/Accra"                    
+##   [3] "Africa/Addis_Ababa"               "Africa/Algiers"                  
+##   [5] "Africa/Asmara"                    "Africa/Asmera"                   
+##   [7] "Africa/Bamako"                    "Africa/Bangui"                   
+##   [9] "Africa/Banjul"                    "Africa/Bissau"                   
+##  [11] "Africa/Blantyre"                  "Africa/Brazzaville"              
+##  [13] "Africa/Bujumbura"                 "Africa/Cairo"                    
+##  [15] "Africa/Casablanca"                "Africa/Ceuta"                    
+##  [17] "Africa/Conakry"                   "Africa/Dakar"                    
+##  [19] "Africa/Dar_es_Salaam"             "Africa/Djibouti"                 
+##  [21] "Africa/Douala"                    "Africa/El_Aaiun"                 
+##  [23] "Africa/Freetown"                  "Africa/Gaborone"                 
+##  [25] "Africa/Harare"                    "Africa/Johannesburg"             
+##  [27] "Africa/Juba"                      "Africa/Kampala"                  
+##  [29] "Africa/Khartoum"                  "Africa/Kigali"                   
+##  [31] "Africa/Kinshasa"                  "Africa/Lagos"                    
+##  [33] "Africa/Libreville"                "Africa/Lome"                     
+##  [35] "Africa/Luanda"                    "Africa/Lubumbashi"               
+##  [37] "Africa/Lusaka"                    "Africa/Malabo"                   
+##  [39] "Africa/Maputo"                    "Africa/Maseru"                   
+##  [41] "Africa/Mbabane"                   "Africa/Mogadishu"                
+##  [43] "Africa/Monrovia"                  "Africa/Nairobi"                  
+##  [45] "Africa/Ndjamena"                  "Africa/Niamey"                   
+##  [47] "Africa/Nouakchott"                "Africa/Ouagadougou"              
+##  [49] "Africa/Porto-Novo"                "Africa/Sao_Tome"                 
+##  [51] "Africa/Timbuktu"                  "Africa/Tripoli"                  
+##  [53] "Africa/Tunis"                     "Africa/Windhoek"                 
+##  [55] "America/Adak"                     "America/Anchorage"               
+##  [57] "America/Anguilla"                 "America/Antigua"                 
+##  [59] "America/Araguaina"                "America/Argentina/Buenos_Aires"  
+##  [61] "America/Argentina/Catamarca"      "America/Argentina/ComodRivadavia"
+##  [63] "America/Argentina/Cordoba"        "America/Argentina/Jujuy"         
+##  [65] "America/Argentina/La_Rioja"       "America/Argentina/Mendoza"       
+##  [67] "America/Argentina/Rio_Gallegos"   "America/Argentina/Salta"         
+##  [69] "America/Argentina/San_Juan"       "America/Argentina/San_Luis"      
+##  [71] "America/Argentina/Tucuman"        "America/Argentina/Ushuaia"       
+##  [73] "America/Aruba"                    "America/Asuncion"                
+##  [75] "America/Atikokan"                 "America/Atka"                    
+##  [77] "America/Bahia"                    "America/Bahia_Banderas"          
+##  [79] "America/Barbados"                 "America/Belem"                   
+##  [81] "America/Belize"                   "America/Blanc-Sablon"            
+##  [83] "America/Boa_Vista"                "America/Bogota"                  
+##  [85] "America/Boise"                    "America/Buenos_Aires"            
+##  [87] "America/Cambridge_Bay"            "America/Campo_Grande"            
+##  [89] "America/Cancun"                   "America/Caracas"                 
+##  [91] "America/Catamarca"                "America/Cayenne"                 
+##  [93] "America/Cayman"                   "America/Chicago"                 
+##  [95] "America/Chihuahua"                "America/Coral_Harbour"           
+##  [97] "America/Cordoba"                  "America/Costa_Rica"              
+##  [99] "America/Creston"                  "America/Cuiaba"                  
+## [101] "America/Curacao"                  "America/Danmarkshavn"            
+## [103] "America/Dawson"                   "America/Dawson_Creek"            
+## [105] "America/Denver"                   "America/Detroit"                 
+## [107] "America/Dominica"                 "America/Edmonton"                
+## [109] "America/Eirunepe"                 "America/El_Salvador"             
+## [111] "America/Ensenada"                 "America/Fort_Nelson"             
+## [113] "America/Fort_Wayne"               "America/Fortaleza"               
+## [115] "America/Glace_Bay"                "America/Godthab"                 
+## [117] "America/Goose_Bay"                "America/Grand_Turk"              
+## [119] "America/Grenada"                  "America/Guadeloupe"              
+## [121] "America/Guatemala"                "America/Guayaquil"               
+## [123] "America/Guyana"                   "America/Halifax"                 
+## [125] "America/Havana"                   "America/Hermosillo"              
+## [127] "America/Indiana/Indianapolis"     "America/Indiana/Knox"            
+## [129] "America/Indiana/Marengo"          "America/Indiana/Petersburg"      
+## [131] "America/Indiana/Tell_City"        "America/Indiana/Vevay"           
+## [133] "America/Indiana/Vincennes"        "America/Indiana/Winamac"         
+## [135] "America/Indianapolis"             "America/Inuvik"                  
+## [137] "America/Iqaluit"                  "America/Jamaica"                 
+## [139] "America/Jujuy"                    "America/Juneau"                  
+## [141] "America/Kentucky/Louisville"      "America/Kentucky/Monticello"     
+## [143] "America/Knox_IN"                  "America/Kralendijk"              
+## [145] "America/La_Paz"                   "America/Lima"                    
+## [147] "America/Los_Angeles"              "America/Louisville"              
+## [149] "America/Lower_Princes"            "America/Maceio"                  
+## [151] "America/Managua"                  "America/Manaus"                  
+## [153] "America/Marigot"                  "America/Martinique"              
+## [155] "America/Matamoros"                "America/Mazatlan"                
+## [157] "America/Mendoza"                  "America/Menominee"               
+## [159] "America/Merida"                   "America/Metlakatla"              
+## [161] "America/Mexico_City"              "America/Miquelon"                
+## [163] "America/Moncton"                  "America/Monterrey"               
+## [165] "America/Montevideo"               "America/Montreal"                
+## [167] "America/Montserrat"               "America/Nassau"                  
+## [169] "America/New_York"                 "America/Nipigon"                 
+## [171] "America/Nome"                     "America/Noronha"                 
+## [173] "America/North_Dakota/Beulah"      "America/North_Dakota/Center"     
+## [175] "America/North_Dakota/New_Salem"   "America/Nuuk"                    
+## [177] "America/Ojinaga"                  "America/Panama"                  
+## [179] "America/Pangnirtung"              "America/Paramaribo"              
+## [181] "America/Phoenix"                  "America/Port_of_Spain"           
+## [183] "America/Port-au-Prince"           "America/Porto_Acre"              
+## [185] "America/Porto_Velho"              "America/Puerto_Rico"             
+## [187] "America/Punta_Arenas"             "America/Rainy_River"             
+## [189] "America/Rankin_Inlet"             "America/Recife"                  
+## [191] "America/Regina"                   "America/Resolute"                
+## [193] "America/Rio_Branco"               "America/Rosario"                 
+## [195] "America/Santa_Isabel"             "America/Santarem"                
+## [197] "America/Santiago"                 "America/Santo_Domingo"           
+## [199] "America/Sao_Paulo"                "America/Scoresbysund"            
+## [201] "America/Shiprock"                 "America/Sitka"                   
+## [203] "America/St_Barthelemy"            "America/St_Johns"                
+## [205] "America/St_Kitts"                 "America/St_Lucia"                
+## [207] "America/St_Thomas"                "America/St_Vincent"              
+## [209] "America/Swift_Current"            "America/Tegucigalpa"             
+## [211] "America/Thule"                    "America/Thunder_Bay"             
+## [213] "America/Tijuana"                  "America/Toronto"                 
+## [215] "America/Tortola"                  "America/Vancouver"               
+## [217] "America/Virgin"                   "America/Whitehorse"              
+## [219] "America/Winnipeg"                 "America/Yakutat"                 
+## [221] "America/Yellowknife"              "Antarctica/Casey"                
+## [223] "Antarctica/Davis"                 "Antarctica/DumontDUrville"       
+## [225] "Antarctica/Macquarie"             "Antarctica/Mawson"               
+## [227] "Antarctica/McMurdo"               "Antarctica/Palmer"               
+## [229] "Antarctica/Rothera"               "Antarctica/South_Pole"           
+## [231] "Antarctica/Syowa"                 "Antarctica/Troll"                
+## [233] "Antarctica/Vostok"                "Arctic/Longyearbyen"             
+## [235] "Asia/Aden"                        "Asia/Almaty"                     
+## [237] "Asia/Amman"                       "Asia/Anadyr"                     
+## [239] "Asia/Aqtau"                       "Asia/Aqtobe"                     
+## [241] "Asia/Ashgabat"                    "Asia/Ashkhabad"                  
+## [243] "Asia/Atyrau"                      "Asia/Baghdad"                    
+## [245] "Asia/Bahrain"                     "Asia/Baku"                       
+## [247] "Asia/Bangkok"                     "Asia/Barnaul"                    
+## [249] "Asia/Beirut"                      "Asia/Bishkek"                    
+## [251] "Asia/Brunei"                      "Asia/Calcutta"                   
+## [253] "Asia/Chita"                       "Asia/Choibalsan"                 
+## [255] "Asia/Chongqing"                   "Asia/Chungking"                  
+## [257] "Asia/Colombo"                     "Asia/Dacca"                      
+## [259] "Asia/Damascus"                    "Asia/Dhaka"                      
+## [261] "Asia/Dili"                        "Asia/Dubai"                      
+## [263] "Asia/Dushanbe"                    "Asia/Famagusta"                  
+## [265] "Asia/Gaza"                        "Asia/Harbin"                     
+## [267] "Asia/Hebron"                      "Asia/Ho_Chi_Minh"                
+## [269] "Asia/Hong_Kong"                   "Asia/Hovd"                       
+## [271] "Asia/Irkutsk"                     "Asia/Istanbul"                   
+## [273] "Asia/Jakarta"                     "Asia/Jayapura"                   
+## [275] "Asia/Jerusalem"                   "Asia/Kabul"                      
+## [277] "Asia/Kamchatka"                   "Asia/Karachi"                    
+## [279] "Asia/Kashgar"                     "Asia/Kathmandu"                  
+## [281] "Asia/Katmandu"                    "Asia/Khandyga"                   
+## [283] "Asia/Kolkata"                     "Asia/Krasnoyarsk"                
+## [285] "Asia/Kuala_Lumpur"                "Asia/Kuching"                    
+## [287] "Asia/Kuwait"                      "Asia/Macao"                      
+## [289] "Asia/Macau"                       "Asia/Magadan"                    
+## [291] "Asia/Makassar"                    "Asia/Manila"                     
+## [293] "Asia/Muscat"                      "Asia/Nicosia"                    
+## [295] "Asia/Novokuznetsk"                "Asia/Novosibirsk"                
+## [297] "Asia/Omsk"                        "Asia/Oral"                       
+## [299] "Asia/Phnom_Penh"                  "Asia/Pontianak"                  
+## [301] "Asia/Pyongyang"                   "Asia/Qatar"                      
+## [303] "Asia/Qostanay"                    "Asia/Qyzylorda"                  
+## [305] "Asia/Rangoon"                     "Asia/Riyadh"                     
+## [307] "Asia/Saigon"                      "Asia/Sakhalin"                   
+## [309] "Asia/Samarkand"                   "Asia/Seoul"                      
+## [311] "Asia/Shanghai"                    "Asia/Singapore"                  
+## [313] "Asia/Srednekolymsk"               "Asia/Taipei"                     
+## [315] "Asia/Tashkent"                    "Asia/Tbilisi"                    
+## [317] "Asia/Tehran"                      "Asia/Tel_Aviv"                   
+## [319] "Asia/Thimbu"                      "Asia/Thimphu"                    
+## [321] "Asia/Tokyo"                       "Asia/Tomsk"                      
+## [323] "Asia/Ujung_Pandang"               "Asia/Ulaanbaatar"                
+## [325] "Asia/Ulan_Bator"                  "Asia/Urumqi"                     
+## [327] "Asia/Ust-Nera"                    "Asia/Vientiane"                  
+## [329] "Asia/Vladivostok"                 "Asia/Yakutsk"                    
+## [331] "Asia/Yangon"                      "Asia/Yekaterinburg"              
+## [333] "Asia/Yerevan"                     "Atlantic/Azores"                 
+## [335] "Atlantic/Bermuda"                 "Atlantic/Canary"                 
+## [337] "Atlantic/Cape_Verde"              "Atlantic/Faeroe"                 
+## [339] "Atlantic/Faroe"                   "Atlantic/Jan_Mayen"              
+## [341] "Atlantic/Madeira"                 "Atlantic/Reykjavik"              
+## [343] "Atlantic/South_Georgia"           "Atlantic/St_Helena"              
+## [345] "Atlantic/Stanley"                 "Australia/ACT"                   
+## [347] "Australia/Adelaide"               "Australia/Brisbane"              
+## [349] "Australia/Broken_Hill"            "Australia/Canberra"              
+## [351] "Australia/Currie"                 "Australia/Darwin"                
+## [353] "Australia/Eucla"                  "Australia/Hobart"                
+## [355] "Australia/LHI"                    "Australia/Lindeman"              
+## [357] "Australia/Lord_Howe"              "Australia/Melbourne"             
+## [359] "Australia/North"                  "Australia/NSW"                   
+## [361] "Australia/Perth"                  "Australia/Queensland"            
+## [363] "Australia/South"                  "Australia/Sydney"                
+## [365] "Australia/Tasmania"               "Australia/Victoria"              
+## [367] "Australia/West"                   "Australia/Yancowinna"            
+## [369] "Brazil/Acre"                      "Brazil/DeNoronha"                
+## [371] "Brazil/East"                      "Brazil/West"                     
+## [373] "Canada/Atlantic"                  "Canada/Central"                  
+## [375] "Canada/Eastern"                   "Canada/Mountain"                 
+## [377] "Canada/Newfoundland"              "Canada/Pacific"                  
+## [379] "Canada/Saskatchewan"              "Canada/Yukon"                    
+## [381] "CET"                              "Chile/Continental"               
+## [383] "Chile/EasterIsland"               "CST6CDT"                         
+## [385] "Cuba"                             "EET"                             
+## [387] "Egypt"                            "Eire"                            
+## [389] "EST"                              "EST5EDT"                         
+## [391] "Etc/GMT"                          "Etc/GMT-0"                       
+## [393] "Etc/GMT-1"                        "Etc/GMT-10"                      
+## [395] "Etc/GMT-11"                       "Etc/GMT-12"                      
+## [397] "Etc/GMT-13"                       "Etc/GMT-14"                      
+## [399] "Etc/GMT-2"                        "Etc/GMT-3"                       
+## [401] "Etc/GMT-4"                        "Etc/GMT-5"                       
+## [403] "Etc/GMT-6"                        "Etc/GMT-7"                       
+## [405] "Etc/GMT-8"                        "Etc/GMT-9"                       
+## [407] "Etc/GMT+0"                        "Etc/GMT+1"                       
+## [409] "Etc/GMT+10"                       "Etc/GMT+11"                      
+## [411] "Etc/GMT+12"                       "Etc/GMT+2"                       
+## [413] "Etc/GMT+3"                        "Etc/GMT+4"                       
+## [415] "Etc/GMT+5"                        "Etc/GMT+6"                       
+## [417] "Etc/GMT+7"                        "Etc/GMT+8"                       
+## [419] "Etc/GMT+9"                        "Etc/GMT0"                        
+## [421] "Etc/Greenwich"                    "Etc/UCT"                         
+## [423] "Etc/Universal"                    "Etc/UTC"                         
+## [425] "Etc/Zulu"                         "Europe/Amsterdam"                
+## [427] "Europe/Andorra"                   "Europe/Astrakhan"                
+## [429] "Europe/Athens"                    "Europe/Belfast"                  
+## [431] "Europe/Belgrade"                  "Europe/Berlin"                   
+## [433] "Europe/Bratislava"                "Europe/Brussels"                 
+## [435] "Europe/Bucharest"                 "Europe/Budapest"                 
+## [437] "Europe/Busingen"                  "Europe/Chisinau"                 
+## [439] "Europe/Copenhagen"                "Europe/Dublin"                   
+## [441] "Europe/Gibraltar"                 "Europe/Guernsey"                 
+## [443] "Europe/Helsinki"                  "Europe/Isle_of_Man"              
+## [445] "Europe/Istanbul"                  "Europe/Jersey"                   
+## [447] "Europe/Kaliningrad"               "Europe/Kiev"                     
+## [449] "Europe/Kirov"                     "Europe/Lisbon"                   
+## [451] "Europe/Ljubljana"                 "Europe/London"                   
+## [453] "Europe/Luxembourg"                "Europe/Madrid"                   
+## [455] "Europe/Malta"                     "Europe/Mariehamn"                
+## [457] "Europe/Minsk"                     "Europe/Monaco"                   
+## [459] "Europe/Moscow"                    "Europe/Nicosia"                  
+## [461] "Europe/Oslo"                      "Europe/Paris"                    
+## [463] "Europe/Podgorica"                 "Europe/Prague"                   
+## [465] "Europe/Riga"                      "Europe/Rome"                     
+## [467] "Europe/Samara"                    "Europe/San_Marino"               
+## [469] "Europe/Sarajevo"                  "Europe/Saratov"                  
+## [471] "Europe/Simferopol"                "Europe/Skopje"                   
+## [473] "Europe/Sofia"                     "Europe/Stockholm"                
+## [475] "Europe/Tallinn"                   "Europe/Tirane"                   
+## [477] "Europe/Tiraspol"                  "Europe/Ulyanovsk"                
+## [479] "Europe/Uzhgorod"                  "Europe/Vaduz"                    
+## [481] "Europe/Vatican"                   "Europe/Vienna"                   
+## [483] "Europe/Vilnius"                   "Europe/Volgograd"                
+## [485] "Europe/Warsaw"                    "Europe/Zagreb"                   
+## [487] "Europe/Zaporozhye"                "Europe/Zurich"                   
+## [489] "GB"                               "GB-Eire"                         
+## [491] "GMT"                              "GMT-0"                           
+## [493] "GMT+0"                            "GMT0"                            
+## [495] "Greenwich"                        "Hongkong"                        
+## [497] "HST"                              "Iceland"                         
+## [499] "Indian/Antananarivo"              "Indian/Chagos"                   
+## [501] "Indian/Christmas"                 "Indian/Cocos"                    
+## [503] "Indian/Comoro"                    "Indian/Kerguelen"                
+## [505] "Indian/Mahe"                      "Indian/Maldives"                 
+## [507] "Indian/Mauritius"                 "Indian/Mayotte"                  
+## [509] "Indian/Reunion"                   "Iran"                            
+## [511] "Israel"                           "Jamaica"                         
+## [513] "Japan"                            "Kwajalein"                       
+## [515] "Libya"                            "MET"                             
+## [517] "Mexico/BajaNorte"                 "Mexico/BajaSur"                  
+## [519] "Mexico/General"                   "MST"                             
+## [521] "MST7MDT"                          "Navajo"                          
+## [523] "NZ"                               "NZ-CHAT"                         
+## [525] "Pacific/Apia"                     "Pacific/Auckland"                
+## [527] "Pacific/Bougainville"             "Pacific/Chatham"                 
+## [529] "Pacific/Chuuk"                    "Pacific/Easter"                  
+## [531] "Pacific/Efate"                    "Pacific/Enderbury"               
+## [533] "Pacific/Fakaofo"                  "Pacific/Fiji"                    
+## [535] "Pacific/Funafuti"                 "Pacific/Galapagos"               
+## [537] "Pacific/Gambier"                  "Pacific/Guadalcanal"             
+## [539] "Pacific/Guam"                     "Pacific/Honolulu"                
+## [541] "Pacific/Johnston"                 "Pacific/Kiritimati"              
+## [543] "Pacific/Kosrae"                   "Pacific/Kwajalein"               
+## [545] "Pacific/Majuro"                   "Pacific/Marquesas"               
+## [547] "Pacific/Midway"                   "Pacific/Nauru"                   
+## [549] "Pacific/Niue"                     "Pacific/Norfolk"                 
+## [551] "Pacific/Noumea"                   "Pacific/Pago_Pago"               
+## [553] "Pacific/Palau"                    "Pacific/Pitcairn"                
+## [555] "Pacific/Pohnpei"                  "Pacific/Ponape"                  
+## [557] "Pacific/Port_Moresby"             "Pacific/Rarotonga"               
+## [559] "Pacific/Saipan"                   "Pacific/Samoa"                   
+## [561] "Pacific/Tahiti"                   "Pacific/Tarawa"                  
+## [563] "Pacific/Tongatapu"                "Pacific/Truk"                    
+## [565] "Pacific/Wake"                     "Pacific/Wallis"                  
+## [567] "Pacific/Yap"                      "Poland"                          
+## [569] "Portugal"                         "PRC"                             
+## [571] "PST8PDT"                          "ROC"                             
+## [573] "ROK"                              "Singapore"                       
+## [575] "Turkey"                           "UCT"                             
+## [577] "Universal"                        "US/Alaska"                       
+## [579] "US/Aleutian"                      "US/Arizona"                      
+## [581] "US/Central"                       "US/East-Indiana"                 
+## [583] "US/Eastern"                       "US/Hawaii"                       
+## [585] "US/Indiana-Starke"                "US/Michigan"                     
+## [587] "US/Mountain"                      "US/Pacific"                      
+## [589] "US/Pacific-New"                   "US/Samoa"                        
+## [591] "UTC"                              "W-SU"                            
+## [593] "WET"                              "Zulu"                            
+## attr(,"Version")
+## [1] "2020a"
+```
+
+---
+
+### All time zones
+
+
+```r
+length(OlsonNames())
+```
+
+```
+## [1] 594
+```
+
+--
+
+
+```r
+OlsonNames()[114:119]
+```
+
+```
+## [1] "America/Fortaleza"  "America/Glace_Bay"  "America/Godthab"   
+## [4] "America/Goose_Bay"  "America/Grand_Turk" "America/Grenada"
+```
+
+---
+
+class: inverse middle
+
+.font75[Time spans]
+
+---
+
+
+```r
+today() - ymd("1911/05/31")
+```
+
+```
+## Time difference of 39974 days
+```
+
+--
+
+
+```r
+since_titanic &lt;- today() - ymd("1911/05/31")
+str(since_titanic)
+```
+
+```
+##  'difftime' num 39974
+##  - attr(*, "units")= chr "days"
+```
+
+---
+
+## Durations
+
+
+```r
+since_titanic &lt;- as.duration(since_titanic)
+str(since_titanic)
+```
+
+```
+## Formal class 'Duration' [package "lubridate"] with 1 slot
+##   ..@ .Data: num 3.45e+09
+```
+
+```r
+since_titanic
+```
+
+```
+## [1] "3453753600s (~109.44 years)"
+```
+
+
+---
+
+## Durations
+
+
+```r
+some_date &lt;- ymd("1911/05/31")
+
+some_date + ddays(3)
+```
+
+```
+## [1] "1911-06-03"
+```
+
+--
+
+
+```r
+some_date + ddays(3) + dseconds(4)
+```
+
+```
+## [1] "1911-06-03 00:00:04 UTC"
+```
+
+---
+
+
+```r
+some_time &lt;- mdy_hms("10/31/2020 10:05:18", 
+        tz = "America/Los_Angeles")
+
+some_time
+```
+
+```
+## [1] "2020-10-31 10:05:18 PDT"
+```
+
+--
+
+
+```r
+some_time + ddays(1)
+```
+
+```
+## [1] "2020-11-01 09:05:18 PST"
+```
+
+--
+
+Lubridate package takes daylight savings into account.
+
+---
+
+class: inverse middle
+
+.font50[Components of Data and Time]
+
+---
+
+## Getting Year
+
+
+```r
+apollo11_return &lt;- ymd_hm("1969/07/21 17:54")
+apollo11_return
+```
+
+```
+## [1] "1969-07-21 17:54:00 UTC"
+```
+
+--
+
+
+```r
+year(apollo11_return)
+```
+
+```
+## [1] 1969
+```
+
+---
+
+## Getting Month
+
+
+```r
+month(apollo11_return)
+```
+
+```
+## [1] 7
+```
+
+--
+
+
+```r
+month(apollo11_return, label = TRUE)
+```
+
+```
+## [1] Jul
+## 12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
+```
+
+---
+
+### Getting Day and Day of the Week
+
+
+```r
+day(apollo11_return)
+```
+
+```
+## [1] 21
+```
+
+--
+
+
+```r
+wday(apollo11_return)
+```
+
+```
+## [1] 2
+```
+
+--
+
+
+```r
+wday(apollo11_return, label = TRUE)
+```
+
+```
+## [1] Mon
+## Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat
+```
+
+---
+
+class: center middle
+
+[lubridate cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "pygments",
+"highlightLines": true,
+"highlightLanguage": "r"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

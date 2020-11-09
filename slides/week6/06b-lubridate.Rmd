@@ -1,0 +1,318 @@
+---
+title: "Working with Dates"
+author: "Dr. Mine Dogucu"
+output: 
+  xaringan::moon_reader:
+    css: slide-style.css
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: "pygments"
+      highlightLines: true
+      highlightLanguage: "r"
+---
+
+class: title-slide
+
+
+<br>
+<br>
+.pull-right[ 
+
+# `r rmarkdown::metadata$title`
+## `r rmarkdown::metadata$author`
+]
+
+---
+
+class: middle
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+
+```{r echo = FALSE, fig.align='center', out.width="40%"}
+
+knitr::include_graphics("img/lubridate-logo.jpg")
+```
+
+
+```{r message = FALSE}
+library(lubridate)
+```
+
+---
+
+class: middle
+
+```{r echo = FALSE, fig.align='center', out.height="95%"}
+knitr::include_graphics("https://imgs.xkcd.com/comics/iso_8601.png")
+```
+
+.footnote[https://xkcd.com/1179/]
+
+
+---
+
+```{r}
+today()
+now()
+```
+
+---
+class: inverse middle
+
+.font75[From strings to dates]
+
+---
+
+#### `mdy()`
+
+```{r}
+
+arrival <- c("November 1st, 2005", "February 2nd 2007")
+
+```
+
+--
+
+```{r}
+str(arrival)
+```
+
+--
+
+```{r}
+mdy(arrival)
+```
+
+--
+
+```{r}
+str(mdy(arrival))
+```
+
+---
+
+```{r}
+mdy("11012005")
+```
+
+--
+
+```{r}
+mdy("Nov-01-2005")
+```
+
+---
+
+class: middle
+
+`mdy()`
+
+--
+
+`ymd()`
+
+--
+
+`dmy()`
+
+
+---
+
+We can include hours, minutes and seconds too.
+
+```{r}
+mdy_hms("11/01/2005 22:05:18")
+```
+
+--
+
+
+```{r}
+mdy_hms("11/01/2005 22:05:18") %>% 
+  str()
+```
+
+
+---
+
+## Types
+
+`date`
+
+--
+
+`time`
+
+--
+
+`date-time`
+
+--
+
+`POSIXct`
+
+--
+
+`POSIXlt`
+
+---
+
+## Including time zones
+
+```{r}
+mdy_hms("11/01/2005 22:05:18", 
+        tz = "America/Los_Angeles")
+```
+
+---
+
+## All time zones
+
+```{r}
+OlsonNames()
+```
+
+---
+
+### All time zones
+
+```{r}
+length(OlsonNames())
+```
+
+--
+
+```{r}
+OlsonNames()[114:119]
+```
+
+---
+
+class: inverse middle
+
+.font75[Time spans]
+
+---
+
+```{r}
+today() - ymd("1911/05/31")
+```
+
+--
+
+```{r}
+since_titanic <- today() - ymd("1911/05/31")
+str(since_titanic)
+```
+
+---
+
+## Durations
+
+```{r}
+since_titanic <- as.duration(since_titanic)
+str(since_titanic)
+since_titanic
+```
+
+
+---
+
+## Durations
+
+```{r}
+some_date <- ymd("1911/05/31")
+
+some_date + ddays(3)
+```
+
+--
+
+```{r}
+
+some_date + ddays(3) + dseconds(4)
+```
+
+---
+
+```{r}
+some_time <- mdy_hms("10/31/2020 10:05:18", 
+        tz = "America/Los_Angeles")
+
+some_time
+```
+
+--
+
+```{r}
+some_time + ddays(1)
+```
+
+--
+
+Lubridate package takes daylight savings into account.
+
+---
+
+class: inverse middle
+
+.font50[Components of Data and Time]
+
+---
+
+## Getting Year
+
+```{r}
+apollo11_return <- ymd_hm("1969/07/21 17:54")
+apollo11_return
+```
+
+--
+
+```{r}
+year(apollo11_return)
+```
+
+---
+
+## Getting Month
+
+```{r}
+month(apollo11_return)
+```
+
+--
+
+```{r}
+month(apollo11_return, label = TRUE)
+```
+
+---
+
+### Getting Day and Day of the Week
+
+```{r}
+day(apollo11_return)
+```
+
+--
+
+```{r}
+wday(apollo11_return)
+```
+
+--
+
+```{r}
+wday(apollo11_return, label = TRUE)
+```
+
+---
+
+class: center middle
+
+[lubridate cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf)
