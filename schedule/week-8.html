@@ -1,72 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>STATS 295</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+<meta charset="utf-8">
+<title>STATS 295</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../style.css">
+<script src="https://kit.fontawesome.com/4145f6a1ca.js"></script> 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- function for adding html within html--> 
 
-    <link rel="stylesheet" href="../style.css">
-
-    <script src="https://kit.fontawesome.com/4145f6a1ca.js"></script>
-
-	<link rel="shortcut icon" href="img/favicon.ico" />
-
-
-
-    <!-- function for adding html within html-->
-
-        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-        <script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script> 
+<script>
         $(function () {
             $(".load-html").each(function () {
                 $(this).load(this.dataset.source);
             });
         });
         </script>
+</head>
+<body>
+<div class="load-html"  data-source="navbar.html"></div>
+<div class = "main-text">
+  <h1>Week 8 - Package Development</h1>
 
-  </head>
-  <body>
-
-
-    <div class="load-html"  data-source="navbar.html"></div>
-
-
-    <div class = "main-text">
-
-      <div class="container" >
-        <div class="row" >
-
-          <div class="col text-center">
-            <i class="fas fa-hard-hat" style="font-size:50px; color:#ae8f68; "></i>
-
-          </div>
-        </div>
-        <div class="row">
-
-      <div class="col text-center" >
-        <span style = "font-size:30px">Under Construction</span>
-
-      </div>
-      </div>
-
-      <hr style="width: 100%;
-      background-color: #ae8f68;
-      height: 1px; border-color : transparent;" />
-
-
-      </div>
-
-
-    </div>
-
-
-    <div class="load-html"  data-source="footer.html"></div>
-
-
-  </body>
+  
+  If you have any questions about Week 8 materials please post
+  them on Piazza.
+  
+  If you click on icons such as <i class="fas fa-video" aria-hidden="true"
+      title="Link to lecture video"></i> it would direct you to the appropriate link
+  where the course material lies. <br>
+  <br>
+  <table class="table-striped text-left table-bordered" align = "center">
+    <thead>
+    <th style="width:  3%"></th>
+      <th style="width:  30%"></th>
+      <th style="width:  40%">Notes</th>
+      <th style="width:  8%">Links</th>
+      <th style="width:  15%">Due</th>
+      </thead>
+	  
+	  
+	  <tr>
+		  <td><input type="checkbox" /></td>
+		  <td>Package Development</td>
+		  <td></td>
+		  <td><a href="https://uci.yuja.com/V/Video?v=2245967&node=8188336&a=1668476424&autoplay=1" target="_blank">
+            <i class="fas fa-video" aria-hidden="true"
+			   title="Link to lecture video"></i></a></td>
+		  <td></td>
+	  
+	  </tr>
+	  
+	  
+	  
+	  
+	  	 <tr>
+      <td><input type="checkbox" /></td>
+      <td>R package</td>
+      <td>Instructions are in the week 6 repo. You can finish writing, testing, and optimizing functions this week. </td>
+      <td><a href="https://github.com/stats295r-fa20"
+            target = "_blank"><i class="fab fa-github"
+            aria-hidden="true"
+            title="External link to GitHub"></i></a></td>
+      <td>Nov 30, 09:30 am</td>
+    </tr> 
+	  
+	  
+  </table>
+  
+  <!--
+Blank table overflow
+<tr>
+  <td><input type="checkbox" /></td>
+  <td> </td>
+  <td> </td>
+  <td></td>
+</tr>
+--> 
+  
+</div>
+<div class="load-html"  data-source="footer.html"></div>
+</body>
 </html>
